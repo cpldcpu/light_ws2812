@@ -1,3 +1,7 @@
+# Don't commit compiler output
+\Debug\*
+\Release\*
+
 # Object files
 *.o
 
