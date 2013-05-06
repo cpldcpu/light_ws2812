@@ -15,7 +15,6 @@ innerloops. Some advantages of this approach compared to existing solutions are:
 - Compatible to all AVR MCUs since it does not rely on special periphery.
 - Low hardware footprint: Does not rely on any timer or the USI
 - Low software footprint: Size optimized assembler without unrolled loops (<50 bytes in most cases)
-- No configuration needed
 - Supports reduced core AVR such as Attiny 4/5/9/10
 - Arduino or C++ not required
 

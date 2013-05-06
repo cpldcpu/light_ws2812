@@ -1,6 +1,9 @@
 # Don't commit compiler output
 \Debug\*
 \Release\*
+light_ws2812\Debug\*
+light_ws2812\Release\*
+
 
 # Object files
 *.o
