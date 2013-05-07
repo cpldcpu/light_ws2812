@@ -3,11 +3,21 @@
  *
  * Created: 07.04.2013 15:57:49 - v0.1
  *			21.04.2013 15:57:49 - v0.2 - Added 12 Mhz code, cleanup
+ *			07.05.2013          - v0.4 - size optimization, disable irq
  *
  *  Author: Tim (cpldcpu@gmail.com) 
  */ 
 
 #include "light_ws2812.h"
+#include <avr/interrupt.h>
+
+#if defined ws2812_noirq
+	#define ws2812_sei
+	#define ws2812_cli
+#else
+	#define ws2812_sei	sei();
+	#define ws2812_cli	cli();
+#endif
 
 /*
 	This routine writes an array of bytes with RGB values to the Dataout pin
@@ -45,6 +55,8 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
 	uint8_t curbyte,ctr;	
 	
+	ws2812_sei
+	
 	while (datlen--) {
 		curbyte=*data++;	
 						
@@ -58,18 +70,16 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 		
 			"		brcs .+2		\n\t"		// 6l / 7h
 			"		cbi	%2,	%3		\n\t"		// 8l / -
-											  			
-			"		nop				\n\t"		// 9l / 8h
-			"		nop				\n\t"		// 10l / 9h
-		
+
+			"		rjmp .+2		\n\t"		// 10l / 9h
+									  					
 			"		brcc .+2		\n\t"		// 12l / 10h
 			"		cbi	%2,	%3		\n\t"		// -   / 12h    
 			"		breq end%=		\n\t"		// 13 nt. 14 taken
 
-			"		nop				\n\t"		// 14
-			"		nop				\n\t"		// 15
-			"		nop				\n\t"		// 16
-			"		nop				\n\t"		// 17
+			"		rjmp .+2		\n\t"		// 15
+			"		rjmp .+2		\n\t"		// 17
+
 			"		nop				\n\t"		// 18
 			"		rjmp loop%=		\n\t"		// 20				
 			"end%=:					\n\t"		
@@ -79,6 +89,8 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 		
 		// loop overhead including byte load is 6+1 cycles		
 	}
+	
+	ws2812_cli
 }
 
 /*
@@ -104,6 +116,8 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
 	uint8_t curbyte,ctr;
+
+	ws2812_sei
 	
 	while (datlen--) {
 		curbyte=*data++;
@@ -117,10 +131,8 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 	
 		"		brcs .+2		\n\t"		// 6l  / 7h
 		"		cbi	%2,	%3		\n\t"		// 8l  / -
-											// 8l  / 7h
-											
-		"		nop				\n\t"		// 9l  / 8h
-		"		nop				\n\t"		// 10l / 9h
+
+		"		rjmp .+2		\n\t"		// 10l / 9h
 											
 		"		brcc .+2		\n\t"		// 12l / 10h
 		"		cbi	%2,	%3		\n\t"		// -   / 12h 
@@ -134,6 +146,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 		
 		// loop overhead including byte load is 6+1 cycles
 	}
+	ws2812_cli
 }
 
 /*
@@ -159,6 +172,8 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
 	uint8_t curbyte,ctr;
+
+	ws2812_sei
 	
 	while (datlen--) {
 		curbyte=*data++;
@@ -181,6 +196,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 		
 		// loop overhead including byte load is 6+1 cycles
 	}
+	ws2812_cli
 }
 
 /*
@@ -205,6 +221,7 @@ Final timing:
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
 	uint8_t curbyte,ctr;
+	ws2812_sei
 	
 	while (datlen--) {
 		curbyte=*data++;
@@ -227,6 +244,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 		
 		// loop overhead including byte load is 6+1 cycles
 	}
+	ws2812_cli
 }
 
 
@@ -258,13 +276,14 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 	uint8_t curbyte,ctr;
 	
 	if (!datlen) return;
+
+	ws2812_sei
 	
 		asm volatile(
 		"olop%=:ld  %1,Z+		\n\t"			
 		"		ldi	%0,8		\n\t"		// 0
 		
-		"ilop%=:nop				\n\t"		// 1
-		"		nop				\n\t"		// 2
+		"ilop%=:rjmp .+2		\n\t"		// 2
 		"		sbi	%2,	%3		\n\t"		// 3
 		"		lsl	%1			\n\t"		// 4
 		
@@ -282,7 +301,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 		:	"=&d" (ctr), "=&d" (curbyte)
 		:	 "I" (ws2812_port), "I" (ws2812_pin), "z" (data), "r" (datlen)
 		);
-		
+	ws2812_cli		
 }
 
 /*
@@ -315,6 +334,8 @@ void ws2812_sendarray_4Mhz_rc(uint8_t *data,uint16_t datlen)
 	uint8_t curbyte,ctr;
 	
 	if (!datlen) return;
+	
+	ws2812_sei
 	
 		asm volatile(
 		"		ld  %0,Y		\n\t"			
@@ -371,6 +392,8 @@ void ws2812_sendarray_4Mhz_rc(uint8_t *data,uint16_t datlen)
 		:	"=&d" (ctr), "=&d" (curbyte)
 		:	 "I" (ws2812_port), "I" (ws2812_pin), "y" (data), "r" (datlen)
 		);		
+
+	ws2812_cli
 }
 
 #else
