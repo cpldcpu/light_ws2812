@@ -44,9 +44,7 @@ Release History
 ================
 
 - v0.3 2013/05/06 - Initial release. Thanks to "Matthias H." for testing with a longer led chain.
-- v0.4 2013/05/07 - General clean up.
-                  - Some code size optimizations. Thanks to "Fallobst" for suggestions.
-                  - Disabled interrupts in the critical sections.
+- v0.4 2013/05/07 - General clean up -Some code size optimizations. Thanks to "Fallobst" for suggestions - Disabled interrupts in the critical sections.
 
 Please find updates on https://github.com/cpldcpu/light_ws2812
 
