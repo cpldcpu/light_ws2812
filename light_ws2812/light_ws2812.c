@@ -4,6 +4,7 @@
  * Created: 07.04.2013 15:57:49 - v0.1
  *			21.04.2013 15:57:49 - v0.2 - Added 12 Mhz code, cleanup
  *			07.05.2013          - v0.4 - size optimization, disable irq
+ *			20.05.2013          - v0.5 - Fixed timing bug from size optimization
  *
  *  Author: Tim (cpldcpu@gmail.com) 
  */ 
@@ -71,14 +72,14 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 			"		brcs .+2		\n\t"		// 6l / 7h
 			"		cbi	%2,	%3		\n\t"		// 8l / -
 
-			"		rjmp .+2		\n\t"		// 10l / 9h
+			"		rjmp .+0		\n\t"		// 10l / 9h
 									  					
 			"		brcc .+2		\n\t"		// 12l / 10h
 			"		cbi	%2,	%3		\n\t"		// -   / 12h    
 			"		breq end%=		\n\t"		// 13 nt. 14 taken
 
-			"		rjmp .+2		\n\t"		// 15
-			"		rjmp .+2		\n\t"		// 17
+			"		rjmp .+0		\n\t"		// 15
+			"		rjmp .+0		\n\t"		// 17
 
 			"		nop				\n\t"		// 18
 			"		rjmp loop%=		\n\t"		// 20				
@@ -132,7 +133,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 		"		brcs .+2		\n\t"		// 6l  / 7h
 		"		cbi	%2,	%3		\n\t"		// 8l  / -
 
-		"		rjmp .+2		\n\t"		// 10l / 9h
+		"		rjmp .+0		\n\t"		// 10l / 9h
 											
 		"		brcc .+2		\n\t"		// 12l / 10h
 		"		cbi	%2,	%3		\n\t"		// -   / 12h 

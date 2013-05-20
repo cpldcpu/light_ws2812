@@ -43,10 +43,11 @@ void ws2812_sendarray(uint8_t *ledarray,uint16_t length);
 ///////////////////////////////////////////////////////////////////////
 // User defined area: Define IRQ handling
 // Defining ws2812_noirq will suppress the generation of sei and cli
-// instructions. Use this only if no interrupts are enabled.
+// instructions to save 4 bytes of code. Use this only if no interrupts 
+// are enabled.
 ///////////////////////////////////////////////////////////////////////
 
-//#define ws2812_noirq	 // uncomment this only if not interrupts are enabled
+//#define ws2812_noirq	 // uncomment this only if no interrupts are enabled
 
 ///////////////////////////////////////////////////////////////////////
 // End user defined area
