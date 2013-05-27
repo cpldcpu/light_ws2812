@@ -37,7 +37,7 @@ Usage
   be three times the number of LEDs in the chain.
 - Alternatively you can use ws2813_sendarray_mask, which allows to specify one or more output pins
   on the same port.
-- Wait for at least 50 µs before the next LED update to reset the chain.
+- Wait for at least 50 us before the next LED update to reset the chain.
 
 A simple example is provided in "test_rgb_blinky.c"
 
@@ -53,7 +53,7 @@ Release History
 - v0.5 2013/05/20
 	- Fixed timing bug from size optimization
 - v0.6 2013/05/27
-	- Major update: Changed all port access from SBI/CBI to OUT. This removes 
+	- Major update: Changed all port accesses from SBI/CBI to OUT. This removes 
 	a timing inconsistency between reduced core AVR and standard AVR, avoiding separate
 	implementations for different cores. A disadvantage is increase register usage.
 	- Added a "ws2813_sendarray_mask" function which allows to pass a bitmask for the
@@ -64,9 +64,9 @@ Release History
  Tested on
  ==========
 
-- Attiny 85		4 MHz, 8 MHz, 16 MHz, 16.5 MHz (Little-Wire)
+- Attiny 85	4 MHz, 8 MHz, 16 MHz, 16.5 MHz (Little-Wire)
 - Attiny 13A	9.6 MHz
-- Attiny 10		4 Mhz, 8 Mhz (Reduced core)
+- Attiny 10	4 Mhz, 8 Mhz (Reduced core)
 
 
 
