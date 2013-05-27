@@ -99,9 +99,9 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 	Timing optimized for 12Mhz AVR (excl. XMEGA and reduced instruction set)
 
 	The total length of each bit is 1.25탎 (15 cycles @ 12Mhz)
-	* At 0탎 the dataline is pulled high.  (cycle 4+0)
-	* To send a zero the dataline is pulled low after 0.333탎 (4+4=8 cycles).
-	* To send a one the dataline is pulled low after 0.666탎 (4+8=12 cycles).
+	* At 0탎 the dataline is pulled high.  (cycle 3+0)
+	* To send a zero the dataline is pulled low after 0.333탎 (3+4=7 cycles).
+	* To send a one the dataline is pulled low after 0.666탎 (3+8=11 cycles).
 
 	Total loop timing is correct, but the timing for the falling edge can
 	not be accurately reached as the correct 0.375탎 (4.5 cyc.) and 0.675탎 (7.5 cyc)
@@ -114,8 +114,36 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 
 #elif defined ws2812_12MHz
 
-#error "Sorry, 12MHz not supported in this version. Will by updated at a later time. Please use library v0.5"
+void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
+{
+	uint8_t curbyte,ctr,masklo;
+	masklo	=~maskhi&ws2812_port;
+	maskhi |=ws2812_port;
 
+	while (datlen--) {
+		curbyte=*data++;
+		
+		asm volatile(
+		"		ldi	%0,8		\n\t"		// 0
+		"loop%=:lsl	%1			\n\t"		// 1
+		"		dec	%0			\n\t"		// 2
+		"		out	%2,	%3		\n\t"		// 3
+		"		rjmp .+0		\n\t"		// 5
+		
+		"		brcs .+2		\n\t"		// 6nt / 7t
+		"		out	%2,	%4		\n\t"		// 7
+		"		rjmp .+0		\n\t"		// 9
+		"		nop				\n\t"		// 10
+		"		out	%2,	%4		\n\t"		// 11
+		"		rjmp .+0		\n\t"		// 13
+		"		brne loop%=		\n\t"		// 15t loop /14 nt
+		:	"=&d" (ctr)
+		:	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo)
+		);
+	}
+}
+
+/*
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
 	uint8_t curbyte,ctr;
@@ -144,12 +172,10 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 		"		brne loop%=		\n\t"		// 15 loop /14 nt
 		:	"=&d" (ctr)
 		:	"r" (curbyte), "I" (ws2812_port), "I" (ws2812_pin)
-		);
-		
-		// loop overhead including byte load is 6+1 cycles
+		);		
 	}
 }
-
+*/
 
 /*
 	Timing optimized for 8Mhz AVR (excl. XMEGA and reduced instruction set)
