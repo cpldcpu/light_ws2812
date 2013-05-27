@@ -61,6 +61,15 @@ Release History
 	- Removed functions for interrupt handling. Avoiding interference with interrupts
 	is now up to the user. 
 
+ Tested on
+ ==========
+
+- Attiny 85		4 MHz, 8 MHz, 16 MHz, 16.5 MHz (Little-Wire)
+- Attiny 13A	9.6 MHz
+- Attiny 10		4 Mhz, 8 Mhz (Reduced core)
+
+
+
 Please find updates on https://github.com/cpldcpu/light_ws2812
 
 bug reports etc: cpldcpu@gmail.com
