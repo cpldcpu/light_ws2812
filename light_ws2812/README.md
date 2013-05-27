@@ -60,15 +60,18 @@ Release History
 	 selected port. This allows controlling up to 8 independent LED strips.
 	- Removed functions for interrupt handling. Avoiding interference with interrupts
 	is now up to the user. 
-
- Tested on
- ==========
-
-- Attiny 85	4 MHz, 8 MHz, 16 MHz, 16.5 MHz (Little-Wire)
-- Attiny 13A	9.6 MHz
-- Attiny 10	4 Mhz, 8 Mhz (Reduced core)
+	- 4 MHz clock speed is now also supported for standard core AVRs.
+	- 12 MHz implementation is still untested
 
 
+ Tested Combinations
+ ================
+
+| Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz |
+| -------------       |:-------:| :-----: | :------: | :----:| :---:|
+| ATtiny 85 (Standard)| X      |  X     |         |       |  X   | 
+| ATtiny 13A (Standard)|        |        |    X    |       |     | 
+| ATtiny 10 (Reduced Core)| X      |  X     |         |       |     | 
 
 Please find updates on https://github.com/cpldcpu/light_ws2812
 
