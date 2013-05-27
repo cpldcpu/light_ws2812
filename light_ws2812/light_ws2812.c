@@ -96,7 +96,7 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 }
 
 /*
-	Timing optimized for 12Mhz AVR (excl. XMEGA and reduced instruction set)
+	Timing optimized for 12Mhz AVR 
 
 	The total length of each bit is 1.25µs (15 cycles @ 12Mhz)
 	* At 0µs the dataline is pulled high.  (cycle 3+0)
@@ -142,40 +142,6 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 		);
 	}
 }
-
-/*
-void ws2812_sendarray(uint8_t *data,uint16_t datlen)
-{
-	uint8_t curbyte,ctr;
-
-
-	while (datlen--) {
-		curbyte=*data++;
-		
-		asm volatile(
-		"		ldi	%0,8		\n\t"		// 0
-		"loop%=:lsl	%1			\n\t"		// 1
-		"		dec	%0			\n\t"		// 2
-		"		sbi	%2,	%3		\n\t"		// 4
-		"		nop				\n\t"		// 5
-	
-		"		brcs .+2		\n\t"		// 6l  / 7h
-		"		cbi	%2,	%3		\n\t"		// 8l  / -
-
-		"		rjmp .+0		\n\t"		// 10l / 9h
-											
-		"		brcc .+2		\n\t"		// 12l / 10h
-		"		cbi	%2,	%3		\n\t"		// -   / 12h 
-
-		"		nop				\n\t"		// 13
-		
-		"		brne loop%=		\n\t"		// 15 loop /14 nt
-		:	"=&d" (ctr)
-		:	"r" (curbyte), "I" (ws2812_port), "I" (ws2812_pin)
-		);		
-	}
-}
-*/
 
 /*
 	Timing optimized for 8Mhz AVR (excl. XMEGA and reduced instruction set)
