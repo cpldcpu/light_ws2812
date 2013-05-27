@@ -12,31 +12,36 @@
 #include "light_ws2812.h"
 
 struct CRGB { uint8_t g; uint8_t r; uint8_t b; };
-struct CRGB led[3];
+struct CRGB led[1];
 
 int main(void)
 {
-	CLKPR=_BV(CLKPCE);
-	CLKPR=0;			// set clock prescaler to 1 (attiny 25/45/85/24/44/84)
+	uint8_t mask;
 	
-	DDRB|=_BV(PB4);
-
+	#ifdef __AVR_ATtiny10__
+		CCP=0xD8;		// configuration change protection, write signature
+		CLKPSR=1;		// set cpu clock prescaler =1 (8Mhz) (attiny 4/5/9/10)
+		mask=_BV(PB2);
+	#else
+		CLKPR=_BV(CLKPCE);
+		CLKPR=0;			// set clock prescaler to 1 (attiny 25/45/85/24/44/84/13/13A)		
+		mask=_BV(PB4);
+	#endif
+		DDRB|=mask;
+	
+	
 	while(1)
     {
 		uint8_t i;
 		
 		led[0].r=32;led[0].g=32;led[0].b=32;
-		led[1].r=32;led[1].g=0;led[1].b=0;
-		led[2].r=0;led[2].g=32;led[2].b=0;
 
-		ws2812_sendarray(&led[0],3*3);
+		ws2812_sendarray(&led[0],3);
 		_delay_ms(500);
 		
 		led[0].r=32;led[0].g=0;led[0].b=0;
-		led[1].r=0;led[1].g=32;led[1].b=0;
-		led[2].r=0;led[2].g=0;led[2].b=32;
 	
-		ws2812_sendarray(&led[0],3*3);
+		ws2812_sendarray(&led[0],3);
 		_delay_ms(500);
 	
     }

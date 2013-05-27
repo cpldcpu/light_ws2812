@@ -4,7 +4,6 @@ light_ws2812
 Light weight library to control WS2811/WS2812 based LEDS and LED Strings for 8-Bit AVR microcontrollers.
 
 
-
 Description
 ===========
 
@@ -14,14 +13,15 @@ innerloops. Some advantages of this approach compared to existing solutions are:
 
 - Compatible to all AVR MCUs since it does not rely on special periphery.
 - Low hardware footprint: Does not rely on any timer or the USI
-- Low software footprint: Size optimized assembler without unrolled loops (<50 bytes in most cases)
+- Much smaller program code: Size optimized assembler without unrolled loops (<50 bytes in most cases)
 - No initialization required
-- Supports reduced core AVR such as Attiny 4/5/9/10/20/40
+- Carefully optimized to use instructions which are available on all AVR cores and have the same instruction timing across all devices.
+- Supports standard AVR, reduced core AVR (Attiny 4/5/9/10/20/40) and XMEGA (untested) without special case handling.
 - Arduino or C++ not required
+- Clock speeds down to 4Mhz supported.
 
 A disadvantage of this approach is that the code has to be hand optimized for each CPU clockspeed. 
-However, a number of different routines are provided which support CPU clocks from 8Mhz to 16Mhz 
-(standard AVR) or 4MHz to 8Mhz (reduced core).
+However, a number of different routines are provided which support CPU clocks from 4Mhz to 16Mhz.
 
 Usage
 =====
@@ -29,13 +29,14 @@ Usage
 - Add "light_ws2812.c" and "light_ws2812.h" to your project.
 - Make sure optimizations are enabled in the compiler.
 - Change ws2812_port and ws2812_pin in the include file according to the I/O pin you are using.
-- Uncomment the #define appropiate for your CPU core and clock settings. If your exact clock is
-  not supported, try a higher or lower clock setting. The WS2811 controller chip is tolerant to
-  some timing inaccuracy.
+- Uncomment the #define appropiate for your clock settings. If your exact clock is not supported, 
+  try a higher or lower clock setting. The WS2811 controller chip is tolerant to some timing inaccuracy.
 - Set the data output register for the output pin you are using.
 - Call "ws2812_sendarray" with a pointer to your LED data and the number of bytes to transmit.
   Each LED receives 3 bytes in Green-Red-Blue order. Therefore the total number of bytes should
   be three times the number of LEDs in the chain.
+- Alternatively you can use ws2813_sendarray_mask, which allows to specify one or more output pins
+  on the same port.
 - Wait for at least 50 µs before the next LED update to reset the chain.
 
 A simple example is provided in "test_rgb_blinky.c"
@@ -51,6 +52,14 @@ Release History
 	- Disabled interrupts in the critical sections.
 - v0.5 2013/05/20
 	- Fixed timing bug from size optimization
+- v0.6 2013/05/27
+	- Major update: Changed all port access from SBI/CBI to OUT. This removes 
+	a timing inconsistency between reduced core AVR and standard AVR, avoiding separate
+	implementations for different cores. A disadvantage is increase register usage.
+	- Added a "ws2813_sendarray_mask" function which allows to pass a bitmask for the
+	 selected port. This allows controlling up to 8 independent LED strips.
+	- Removed functions for interrupt handling. Avoiding interference with interrupts
+	is now up to the user. 
 
 Please find updates on https://github.com/cpldcpu/light_ws2812
 
