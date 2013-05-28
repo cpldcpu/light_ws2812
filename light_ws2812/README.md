@@ -61,7 +61,6 @@ Release History
 	- Removed functions for interrupt handling. Avoiding interference with interrupts
 	is now up to the user. 
 	- 4 MHz clock speed is now also supported for standard core AVRs.
-	- 12 MHz implementation is still untested
 
 
  Tested Combinations
@@ -69,8 +68,9 @@ Release History
 
 | Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz |
 | -------------       |:-------:| :-----: | :------: | :----:| :---:|
-| ATtiny 85 (Standard)| X      |  X     |         |       |  X   | 
-| ATtiny 13A (Standard)|        |        |    X    |       |     | 
+| ATtiny 85 (Standard Core )| X      |  X     |         |       |  X   | 
+| ATtiny 13 (Standard Core)|        |        |    X    |       |     | 
+| ATmega 8 (Standard Core)|        |        |         |   X    |     | 
 | ATtiny 10 (Reduced Core)| X      |  X     |         |       |     | 
 
 Please find updates on https://github.com/cpldcpu/light_ws2812
