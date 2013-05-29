@@ -56,7 +56,7 @@ Release History
 	- Major update: Changed all port accesses from SBI/CBI to OUT. This removes 
 	a timing inconsistency between reduced core AVR and standard AVR, avoiding separate
 	implementations for different cores. A disadvantage is increase register usage.
-	- Added a "ws2813_sendarray_mask" function which allows to pass a bitmask for the
+	- Added the "ws2812_sendarray_mask" function which allows to pass a bitmask for the
 	 selected port. This allows controlling up to 8 independent LED strips.
 	- Removed functions for interrupt handling. Avoiding interference with interrupts
 	is now up to the user. 
