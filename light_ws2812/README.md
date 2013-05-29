@@ -61,6 +61,10 @@ Release History
 	- Removed functions for interrupt handling. Avoiding interference with interrupts
 	is now up to the user. 
 	- 4 MHz clock speed is now also supported for standard core AVRs.
+- v0.7 2013/05/28
+	- Optimized timing and size of 8 and 12 Mhz routines. All routines are within 
+	  datasheet specs now, expect of 9.6 Mhz which is marginally off but works under
+	  all test conditions	
 
 
  Tested Combinations
