@@ -11,7 +11,7 @@
  *										 only one routine is required. This comes at the cost of
  *										 additional register usage.
  *			28.05.2013			- v0.7 - Optimized timing and size of 8 and 12 Mhz routines. 
- *										 All routines are within datasheet specs now, expect of
+ *										 All routines are within datasheet specs now, except of
  *										 9.6 Mhz which is marginally off.			
  *  Author: Tim (cpldcpu@gmail.com) 
  */ 
@@ -31,7 +31,7 @@ void ws2812_sendarray_mask(uint8_t *, uint16_t , uint8_t);
 
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
-	ws2812_sendarray_mask_opt(data,datlen,_BV(ws2812_pin));
+	ws2812_sendarray_mask(data,datlen,_BV(ws2812_pin));
 }
 
 /*
