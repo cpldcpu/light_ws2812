@@ -66,7 +66,7 @@ Release History
 	  datasheet specs now, except of 9.6 Mhz which is marginally off but works under
 	  all test conditions	
 - v0.8 2013/06/03
-	- v0.8 - 9.6 Mhz implementation now within specifications.
+	- 9.6 Mhz implementation now within specifications.
 	- brvs->brcs. Loops terminate correctly (thanks to Mario Pieschel).
 
  Tested Combinations
