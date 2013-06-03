@@ -67,7 +67,7 @@ Release History
 	  all test conditions	
 - v0.8 2013/06/03
 	- v0.8 - 9.6 Mhz implementation now within specifications.
-	- brvs->brcs. Loops terminate correctly
+	- brvs->brcs. Loops terminate correctly (thanks to Mario Pieschel).
 
  Tested Combinations
  ================
