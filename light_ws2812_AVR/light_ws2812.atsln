@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "light_ws2812", "light_ws2812\light_ws2812.cproj", "{B647D136-EDE1-4908-BB2D-89720C3ADFFD}"
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "light_ws2812", "light_ws2812.cproj", "{B647D136-EDE1-4908-BB2D-89720C3ADFFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
