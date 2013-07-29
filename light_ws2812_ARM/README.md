@@ -17,7 +17,7 @@ Usage
 - Add the correct CMSIS include for your CPU.
 - Set ws2812_cpuclk to your CPU core clock.
 - Set the data output register for the output pin you are using.
-- Set code memory wait states to zero. Important: The library will not work if there are one or more code memory waitstate cycles. This may limit your code clock to 30 Mhz or lower on most Cortex-M0 controllers.
+- Set code memory wait states to zero. **Important:** The library will not work if there are one or more code memory waitstate cycles. This may limit your code clock to 30 Mhz or lower on most Cortex-M0 controllers.
 - Call "ws2812_sendarray" with a pointer to your LED data and the number of bytes to transmit.
   Each LED receives 3 bytes in Green-Red-Blue order. Therefore the total number of bytes should
   be three times the number of LEDs in the chain.
