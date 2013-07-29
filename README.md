@@ -3,6 +3,7 @@ light_ws2812
 
 Light weight library to control WS2811/WS2812 based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers.
 
+[See the library in action on a LPC810](http://www.youtube.com/watch?v=Uwxt7SuSV7Y)
 
 Description
 ===========
