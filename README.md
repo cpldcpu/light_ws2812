@@ -1,7 +1,7 @@
 light_ws2812
 ============
 
-Light weight library to control WS2811/WS2812 based LEDS and LED Strings for 8-Bit AVR microcontrollers.
+Light weight library to control WS2811/WS2812 based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers.
 
 
 Description
@@ -17,6 +17,7 @@ innerloops. Some advantages of this approach compared to existing solutions are:
 - No initialization required
 - Carefully optimized to use instructions which are available on all AVR cores and have the same instruction timing across all devices.
 - Supports standard AVR, reduced core AVR (Attiny 4/5/9/10/20/40) and XMEGA (untested) without special case handling.
+- New:Supports Cortex ARM cores.
 - Arduino or C++ not required
 - Clock speeds down to 4Mhz supported.
 
@@ -68,9 +69,12 @@ Release History
 - v0.8 2013/06/03
 	- 9.6 Mhz implementation now within specifications.
 	- brvs->brcs. Loops terminate correctly (thanks to Mario Pieschel).
+- v0.9 2013/07/29
+	- Added first version of ARM Cortex library
 
- Tested Combinations
- ================
+
+Tested Combinations AVR
+================
 
 | Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz |
 | -------------       |:-------:| :-----: | :------: | :----:| :---:|
@@ -78,6 +82,12 @@ Release History
 | ATtiny 13 (Standard Core)|        |        |    X    |       |     | 
 | ATmega 8 (Standard Core)|        |        |         |   X    |     | 
 | ATtiny 10 (Reduced Core)| X      |  X     |         |       |     | 
+
+Tested Combinations ARM
+================
+| Device             | 12 MHz  | 20 MHz  | 30 MHz | 
+| -------------       |:-------:| :-----: | :------: |
+| LPC810 (Cortex M0+)| X      |  X     |    x     |    
 
 Please find updates on https://github.com/cpldcpu/light_ws2812
 
