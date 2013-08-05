@@ -31,7 +31,8 @@ void ws2812_sendarray_mask(uint8_t *ledarray,uint16_t length, uint8_t mask);
 ///////////////////////////////////////////////////////////////////////
 
 // #define ws2812_4MHz
- #define ws2812_8MHz		
+//#define ws2812_8MHz		
+#define ws2812_20MHz   	
 // #define ws2812_9p6MHz
 // #define ws2812_12MHz  // Warning: Untested in v0.6
 // #define ws2812_16MHz
