@@ -36,6 +36,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 	ws2812_sendarray_mask(data,datlen,_BV(ws2812_pin));
 }
 
+
 /*
 	This routine writes an array of bytes with RGB values to the Dataout pin
 	using the fast 800kHz clockless WS2811/2812 protocol.
@@ -46,10 +47,10 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 	The order of the color-data is GRB 8:8:8. Serial data transmission begins 
 	with the most significant bit in each byte.
 	
-	The total length of each bit is 1.25�s (20 cycles @ 16Mhz)
+	The total length of each bit is 1.25us(25 cycles @ 20Mhz / 50nS per cyc)
 	* At 0�s the dataline is pulled high.
-	* To send a zero the dataline is pulled low after 0.375�s (6 cycles).
-	* To send a one the dataline is pulled low after 0.625�s (10 cycles).
+	* To send a zero the dataline is pulled low after 0.350�s  (7  cyc)
+	* To send a one the dataline is pulled low after 0.700�s  (14 cyc)
 	
 	After the entire bitstream has been written, the dataout pin has to remain low
 	for at least 50�s (reset condition).
@@ -61,6 +62,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 	more than 3�s until it cannot be continued (3�s=48 cyles).
 
 */
+
 
 #if defined ws2812_20MHz
 
@@ -87,17 +89,14 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 
 		"		rjmp .+0		\n\t"		// 10
 		"		rjmp .+0		\n\t"		// 12		
-		"		rjmp .+0		\n\t"		// 12		
-		"		out	%2,	%4		\n\t"		// 14
-		"		breq end%=		\n\t"		// 15      nt. 16 taken
+		"		rjmp .+0		\n\t"		// 14		
+		"		out	%2,	%4		\n\t"	// 15
+		"		breq end%=		\n\t"		// 16      nt. 17 taken
 
 		"		rjmp .+0		\n\t"		// 18
 		"		rjmp .+0		\n\t"		// 20
 		"		rjmp .+0		\n\t"		// 22
-		
-		"		nop				\n\t"		// 21
-		//"		rjmp  .+0		\n\t"		// 24
-		
+		"		nop				\n\t"	// 23
 		"		rjmp loop%=		\n\t"		// 25
 		"end%=:					\n\t"
 		:	"=&d" (ctr)
@@ -105,6 +104,33 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 		);
 	}
 }
+
+
+/*
+	This routine writes an array of bytes with RGB values to the Dataout pin
+	using the fast 800kHz clockless WS2811/2812 protocol.
+	
+	The description of the protocol in the datasheet is somewhat confusing and
+	it appears that some timing values have been rounded. 
+	
+	The order of the color-data is GRB 8:8:8. Serial data transmission begins 
+	with the most significant bit in each byte.
+	
+	The total length of each bit is 1.25�s (20 cycles @ 16Mhz)
+	* At 0�s the dataline is pulled high.
+	* To send a zero the dataline is pulled low after 0.375�s (6 cycles).
+	* To send a one the dataline is pulled low after 0.625�s (10 cycles).
+	
+	After the entire bitstream has been written, the dataout pin has to remain low
+	for at least 50�s (reset condition).
+	
+	Due to the loop overhead there is a slight timing error: The loop will execute
+	in 21 cycles for the last bit write. This does not cause any issues though,
+	as only the timing between the rising and the falling edge seems to be critical.
+	Some quick experiments have shown that the bitstream has to be delayed by 
+	more than 3�s until it cannot be continued (3�s=48 cyles).
+
+*/
 
 
 #elif defined ws2812_16MHz
