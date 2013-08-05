@@ -47,10 +47,10 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 	The order of the color-data is GRB 8:8:8. Serial data transmission begins 
 	with the most significant bit in each byte.
 	
-	The total length of each bit is 1.25us(25 cycles @ 20Mhz / 50nS per cyc)
+	The total length of each bit is 1.25�s (20 cycles @ 16Mhz)
 	* At 0�s the dataline is pulled high.
-	* To send a zero the dataline is pulled low after 0.350�s  (7  cyc)
-	* To send a one the dataline is pulled low after 0.700�s  (14 cyc)
+	* To send a zero the dataline is pulled low after 0.375�s (6 cycles).
+	* To send a one the dataline is pulled low after 0.625�s (10 cycles).
 	
 	After the entire bitstream has been written, the dataout pin has to remain low
 	for at least 50�s (reset condition).
@@ -64,7 +64,68 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 */
 
 
-#if defined ws2812_20MHz
+#if defined ws2812_16MHz
+
+void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
+{
+	uint8_t curbyte,ctr,masklo;
+	masklo	=~maskhi&ws2812_port;
+	maskhi |=ws2812_port;
+	
+	while (datlen--) {
+		curbyte=*data++;
+		
+		asm volatile(
+		
+		"		ldi	%0,8		\n\t"		// 0
+		"loop%=:out	%2,	%3		\n\t"		// 1
+		"		lsl	%1			\n\t"		// 2
+		"		dec	%0			\n\t"		// 3
+
+		"		rjmp .+0		\n\t"		// 5
+		
+		"		brcs .+2		\n\t"		// 6l / 7h
+		"		out	%2,	%4		\n\t"		// 7l / -
+
+		"		rjmp .+0		\n\t"		// 9
+		
+		"		nop				\n\t"		// 10
+		"		out	%2,	%4		\n\t"		// 11
+		"		breq end%=		\n\t"		// 12      nt. 13 taken
+
+		"		rjmp .+0		\n\t"		// 14
+		"		rjmp .+0		\n\t"		// 16
+		"		rjmp .+0		\n\t"		// 18
+		"		rjmp loop%=		\n\t"		// 20
+		"end%=:					\n\t"
+		:	"=&d" (ctr)
+		:	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo)
+		);
+	}
+}
+
+
+
+/*
+	
+	The total length of each bit is 1.25us(25 cycles @ 20Mhz / 50nS per cyc)
+	* At 0us the dataline is pulled high.
+	* To send a zero the dataline is pulled low after 0.350uS  (7  cyc)
+	* To send a one the dataline is pulled low after 0.700uS  (14 cyc)
+	
+	After the entire bitstream has been written, the dataout pin has to remain low
+	for at least 50uS (reset condition).
+	
+	Data transfer time( H+L=1.25μs±600ns)
+	0H: high time 	0.35us ±150ns  	(7 cyc = 0.35uS)
+	0L: low time 	0.8us ±150ns  	(18 cyc = 0.9uS 100nS more, but within tolerance )
+	1H: high time 	0.7us ±150ns 	(14 cyc = 0.7uS )
+	1L: low time 	0.6us ±150ns	(11 cyc = 0.55uS 50nS less, but within tolerance)
+
+*/
+
+
+#elif defined ws2812_20MHz
 
 void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
@@ -106,72 +167,6 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 }
 
 
-/*
-	This routine writes an array of bytes with RGB values to the Dataout pin
-	using the fast 800kHz clockless WS2811/2812 protocol.
-	
-	The description of the protocol in the datasheet is somewhat confusing and
-	it appears that some timing values have been rounded. 
-	
-	The order of the color-data is GRB 8:8:8. Serial data transmission begins 
-	with the most significant bit in each byte.
-	
-	The total length of each bit is 1.25�s (20 cycles @ 16Mhz)
-	* At 0�s the dataline is pulled high.
-	* To send a zero the dataline is pulled low after 0.375�s (6 cycles).
-	* To send a one the dataline is pulled low after 0.625�s (10 cycles).
-	
-	After the entire bitstream has been written, the dataout pin has to remain low
-	for at least 50�s (reset condition).
-	
-	Due to the loop overhead there is a slight timing error: The loop will execute
-	in 21 cycles for the last bit write. This does not cause any issues though,
-	as only the timing between the rising and the falling edge seems to be critical.
-	Some quick experiments have shown that the bitstream has to be delayed by 
-	more than 3�s until it cannot be continued (3�s=48 cyles).
-
-*/
-
-
-#elif defined ws2812_16MHz
-
-void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
-{
-	uint8_t curbyte,ctr,masklo;
-	masklo	=~maskhi&ws2812_port;
-	maskhi |=ws2812_port;
-	
-	while (datlen--) {
-		curbyte=*data++;
-		
-		asm volatile(
-		
-		"		ldi	%0,8		\n\t"		// 0
-		"loop%=:out	%2,	%3		\n\t"		// 1
-		"		lsl	%1			\n\t"		// 2
-		"		dec	%0			\n\t"		// 3
-
-		"		rjmp .+0		\n\t"		// 5
-		
-		"		brcs .+2		\n\t"		// 6l / 7h
-		"		out	%2,	%4		\n\t"		// 7l / -
-
-		"		rjmp .+0		\n\t"		// 9
-		
-		"		nop				\n\t"		// 10
-		"		out	%2,	%4		\n\t"		// 11
-		"		breq end%=		\n\t"		// 12      nt. 13 taken
-
-		"		rjmp .+0		\n\t"		// 14
-		"		rjmp .+0		\n\t"		// 16
-		"		rjmp .+0		\n\t"		// 18
-		"		rjmp loop%=		\n\t"		// 20
-		"end%=:					\n\t"
-		:	"=&d" (ctr)
-		:	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo)
-		);
-	}
-}
 
 /*
 	Timing optimized for 12Mhz AVR 
