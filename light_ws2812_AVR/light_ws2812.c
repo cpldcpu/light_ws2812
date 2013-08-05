@@ -47,19 +47,19 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 	The order of the color-data is GRB 8:8:8. Serial data transmission begins 
 	with the most significant bit in each byte.
 	
-	The total length of each bit is 1.25�s (20 cycles @ 16Mhz)
-	* At 0�s the dataline is pulled high.
-	* To send a zero the dataline is pulled low after 0.375�s (6 cycles).
-	* To send a one the dataline is pulled low after 0.625�s (10 cycles).
+	The total length of each bit is 1.25µs (20 cycles @ 16Mhz)
+	* At 0µs the dataline is pulled high.
+	* To send a zero the dataline is pulled low after 0.375µs (6 cycles).
+	* To send a one the dataline is pulled low after 0.625µs (10 cycles).
 	
 	After the entire bitstream has been written, the dataout pin has to remain low
-	for at least 50�s (reset condition).
+	for at least 50µS (reset condition).
 	
 	Due to the loop overhead there is a slight timing error: The loop will execute
 	in 21 cycles for the last bit write. This does not cause any issues though,
 	as only the timing between the rising and the falling edge seems to be critical.
 	Some quick experiments have shown that the bitstream has to be delayed by 
-	more than 3�s until it cannot be continued (3�s=48 cyles).
+	more than 3µs until it cannot be continued (3µs=48 cyles).
 
 */
 
@@ -108,20 +108,19 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 
 /*
 	
-	The total length of each bit is 1.25us(25 cycles @ 20Mhz / 50nS per cyc)
-	* At 0us the dataline is pulled high.
-	* To send a zero the dataline is pulled low after 0.350uS  (7  cyc)
-	* To send a one the dataline is pulled low after 0.700uS  (14 cyc)
+	The total length of each bit is 1.25µs(25 cycles @ 20Mhz / 50ns per cyc)
+	* At 0µs the dataline is pulled high.
+	* To send a zero the dataline is pulled low after 0.350µs  (7  cyc)
+	* To send a one the dataline is pulled low after 0.700µs  (14 cyc)
 	
 	After the entire bitstream has been written, the dataout pin has to remain low
-	for at least 50uS (reset condition).
+	for at least 50µs (reset condition).
 	
 	Data transfer time( H+L=1.25μs±600ns)
-	0H: high time 	0.35us ±150ns  	(7 cyc = 0.35uS)
-	0L: low time 	0.8us ±150ns  	(18 cyc = 0.9uS 100nS more, but within tolerance )
-	1H: high time 	0.7us ±150ns 	(14 cyc = 0.7uS )
-	1L: low time 	0.6us ±150ns	(11 cyc = 0.55uS 50nS less, but within tolerance)
-
+	0H: high time 	0.35µs ±150ns  	(7 cyc = 0.35µs )
+	0L: low time 	0.8µs ±150ns  	(18 cyc = 0.9µs 100ns more, but within tolerance )
+	1H: high time 	0.7µs ±150ns 	(14 cyc = 0.7µs )
+	1L: low time 	0.6µs ±150ns	(11 cyc = 0.55µs 50ns less, but within tolerance)
 */
 
 
