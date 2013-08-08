@@ -4,6 +4,7 @@
  * Created: 07.04.2013 15:58:05 - v0.1
  *			06.05.2013          - v0.3 - clean up
  *			27.05.2013			- v0.6 - clean up, removed RC variants, added mask
+ *      08.08.2013      - v0.9 - 20 Mhz version added
  *  Author: Tim (cpldcpu@gmail.com) 
  */ 
 
@@ -31,11 +32,11 @@ void ws2812_sendarray_mask(uint8_t *ledarray,uint16_t length, uint8_t mask);
 ///////////////////////////////////////////////////////////////////////
 
 // #define ws2812_4MHz
-//#define ws2812_8MHz		
-#define ws2812_20MHz   	
+#define ws2812_8MHz		
 // #define ws2812_9p6MHz
 // #define ws2812_12MHz  // Warning: Untested in v0.6
 // #define ws2812_16MHz
+// #define ws2812_20MHz     
 
 ///////////////////////////////////////////////////////////////////////
 // End user defined area
