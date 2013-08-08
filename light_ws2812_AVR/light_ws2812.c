@@ -36,6 +36,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 	ws2812_sendarray_mask(data,datlen,_BV(ws2812_pin));
 }
 
+
 /*
 	This routine writes an array of bytes with RGB values to the Dataout pin
 	using the fast 800kHz clockless WS2811/2812 protocol.
@@ -46,21 +47,22 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 	The order of the color-data is GRB 8:8:8. Serial data transmission begins 
 	with the most significant bit in each byte.
 	
-	The total length of each bit is 1.25µs (20 cycles @ 16Mhz)
-	* At 0µs the dataline is pulled high.
-	* To send a zero the dataline is pulled low after 0.375µs (6 cycles).
-	* To send a one the dataline is pulled low after 0.625µs (10 cycles).
+	The total length of each bit is 1.25Âµs (20 cycles @ 16Mhz)
+	* At 0Âµs the dataline is pulled high.
+	* To send a zero the dataline is pulled low after 0.375Âµs (6 cycles).
+	* To send a one the dataline is pulled low after 0.625Âµs (10 cycles).
 	
 	After the entire bitstream has been written, the dataout pin has to remain low
-	for at least 50µs (reset condition).
+	for at least 50ÂµS (reset condition).
 	
 	Due to the loop overhead there is a slight timing error: The loop will execute
 	in 21 cycles for the last bit write. This does not cause any issues though,
 	as only the timing between the rising and the falling edge seems to be critical.
 	Some quick experiments have shown that the bitstream has to be delayed by 
-	more than 3µs until it cannot be continued (3µs=48 cyles).
+	more than 3Âµs until it cannot be continued (3Âµs=48 cyles).
 
 */
+
 
 #if defined ws2812_16MHz
 
@@ -102,23 +104,86 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 	}
 }
 
+
+
+/*
+	
+	The total length of each bit is 1.25Âµs(25 cycles @ 20Mhz / 50ns per cyc)
+	* At 0Âµs the dataline is pulled high.
+	* To send a zero the dataline is pulled low after 0.350Âµs  (7  cyc)
+	* To send a one the dataline is pulled low after 0.700Âµs  (14 cyc)
+	
+	After the entire bitstream has been written, the dataout pin has to remain low
+	for at least 50Âµs (reset condition).
+	
+	Data transfer time( H+L=1.25Î¼sÂ±600ns)
+	0H: high time 	0.35Âµs Â±150ns  	(7 cyc = 0.35Âµs )
+	0L: low time 	0.8Âµs Â±150ns  	(18 cyc = 0.9Âµs 100ns more, but within tolerance )
+	1H: high time 	0.7Âµs Â±150ns 	(14 cyc = 0.7Âµs )
+	1L: low time 	0.6Âµs Â±150ns	(11 cyc = 0.55Âµs 50ns less, but within tolerance)
+*/
+
+
+#elif defined ws2812_20MHz
+
+void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
+{
+	uint8_t curbyte,ctr,masklo;
+	masklo	=~maskhi&ws2812_port;
+	maskhi |=ws2812_port;
+	
+	while (datlen--) {
+		curbyte=*data++;
+		 
+		asm volatile(
+		
+		"		ldi	%0,8		\n\t"		// 0
+		"loop%=:out	%2,	%3		\n\t"		// 1
+		"		lsl	%1			\n\t"		// 2
+		"		dec	%0			\n\t"		// 3
+
+		"		rjmp .+0		\n\t"		// 5
+		"		nop				\n\t"		// 6		
+		"		brcs .+2		\n\t"		// 7l / 8h
+		"		out	%2,	%4		\n\t"		// 8l / -
+
+		"		rjmp .+0		\n\t"		// 10
+		"		rjmp .+0		\n\t"		// 12		
+		"		rjmp .+0		\n\t"		// 14		
+		"		out	%2,	%4		\n\t"	// 15
+		"		breq end%=		\n\t"		// 16      nt. 17 taken
+
+		"		rjmp .+0		\n\t"		// 18
+		"		rjmp .+0		\n\t"		// 20
+		"		rjmp .+0		\n\t"		// 22
+		"		nop				\n\t"	// 23
+		"		rjmp loop%=		\n\t"		// 25
+		"end%=:					\n\t"
+		:	"=&d" (ctr)
+		:	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo) 
+		);
+	}
+}
+
+
+
 /*
 	Timing optimized for 12Mhz AVR 
 
-	The total length of each bit is 1.25µs (15 cycles @ 12Mhz)
-	* At 0µs the dataline is pulled high.  (cycle 1+0)
-	* To send a zero the dataline is pulled low after 0.333µs (1+4=5 cycles).
-	* To send a one the dataline is pulled low after 0.666µs (1+8=9 cycles).
+	The total length of each bit is 1.25ï¿½s (15 cycles @ 12Mhz)
+	* At 0ï¿½s the dataline is pulled high.  (cycle 1+0)
+	* To send a zero the dataline is pulled low after 0.333ï¿½s (1+4=5 cycles).
+	* To send a one the dataline is pulled low after 0.666ï¿½s (1+8=9 cycles).
 
 	Total loop timing is correct, but the timing for the falling edge can
-	not be accurately reached as the correct 0.375µs (4.5 cyc.) and 0.675µs (7.5 cyc)
+	not be accurately reached as the correct 0.375ï¿½s (4.5 cyc.) and 0.675ï¿½s (7.5 cyc)
 	timings fall in between cycles.
 	
 	Final timing: 
 	* 15 cycles for bits 7-1
 	* 16 cycles for bit 0	
-	- The bit 0 timing exceeds the 1.25µs bit-timing by 66.7µs, which is still
-	within datasheet tolerances (600µs)
+	- The bit 0 timing exceeds the 1.25ï¿½s bit-timing by 66.7ï¿½s, which is still
+	within datasheet tolerances (600ï¿½s)
 */
 
 #elif defined ws2812_12MHz
@@ -160,17 +225,17 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 /*
 	Timing optimized for 8Mhz AVR (excl. XMEGA and reduced instruction set)
 
-	The total length of each bit is 1.25µs (10 cycles @ 8Mhz)
-	* At 0µs the dataline is pulled high.  (cycle 1+0=1)
-	* To send a zero the dataline is pulled low after 0.375µs (1+3=4 cycles).
-	* To send a one the dataline is pulled low after 0.625µs (1+5=6 cycles).
+	The total length of each bit is 1.25ï¿½s (10 cycles @ 8Mhz)
+	* At 0ï¿½s the dataline is pulled high.  (cycle 1+0=1)
+	* To send a zero the dataline is pulled low after 0.375ï¿½s (1+3=4 cycles).
+	* To send a one the dataline is pulled low after 0.625ï¿½s (1+5=6 cycles).
 
 	Final timing: 
 	* 10 cycles for bits 7-1
 	* 14 cycles for bit 0		
 	
-	- The bit 0 timing exceeds the 1.25µs bit-timing by 500µs, which is still
-	  within datasheet tolerances (600µs)
+	- The bit 0 timing exceeds the 1.25ï¿½s bit-timing by 500ï¿½s, which is still
+	  within datasheet tolerances (600ï¿½s)
 */
 
 #elif defined ws2812_8MHz
@@ -209,10 +274,10 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 /*
 Timing optimized for 9.6Mhz AVR 
 
-The total length of each bit is 1.25µs (12 cycles @ 9.6Mhz)
-* At 0µs the dataline is pulled high.  (cycle 1)
-* To send a zero the dataline is pulled low after 0.312µs (1+3=4 cycles) (error 0.06µs)
-* To send a one the dataline is pulled low after 0.625µs (1+6=7 cycles) (no error).
+The total length of each bit is 1.25ï¿½s (12 cycles @ 9.6Mhz)
+* At 0ï¿½s the dataline is pulled high.  (cycle 1)
+* To send a zero the dataline is pulled low after 0.312ï¿½s (1+3=4 cycles) (error 0.06ï¿½s)
+* To send a one the dataline is pulled low after 0.625ï¿½s (1+6=7 cycles) (no error).
 
 12 cycles can not be reached for bit 0 write. However since the timing 
 between the rising and falling edge is correct, it seems to be acceptable 
@@ -222,8 +287,8 @@ Final timing:
 * 12 cycles for bits 7-1
 * 15 cycles for bit 0
 
-	- The bit 0 timing exceeds the 1.25µs timing by 312µs, which is still within
-	  datasheet tolerances (600µs).
+	- The bit 0 timing exceeds the 1.25ï¿½s timing by 312ï¿½s, which is still within
+	  datasheet tolerances (600ï¿½s).
 */
 
 #elif defined ws2812_9p6MHz
@@ -264,10 +329,10 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 /*
 	Timing optimized for 4Mhz AVR
 	
-	The total length of each bit is 1.25µs (5 cycles @ 4Mhz)
-	* At 0µs the dataline is pulled high.  (cycle 0+1)
-	* To send a zero the dataline is pulled low after 0.5µs (spec: 0.375µs)  (2+1=3 cycles).
-	* To send a one the dataline is pulled low after 0.75µs  (spec: 0.625µs) (3+1=4 cycles).
+	The total length of each bit is 1.25ï¿½s (5 cycles @ 4Mhz)
+	* At 0ï¿½s the dataline is pulled high.  (cycle 0+1)
+	* To send a zero the dataline is pulled low after 0.5ï¿½s (spec: 0.375ï¿½s)  (2+1=3 cycles).
+	* To send a one the dataline is pulled low after 0.75ï¿½s  (spec: 0.625ï¿½s) (3+1=4 cycles).
 
 	The timing of this implementation is slightly off, however it seems to 
 	work empirically. 
@@ -276,8 +341,8 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 	* 5 cycles for bits 7-1
 	* 6 cycles for bit 0	
 	
-	- The bit 0 timing exceeds the 1.25µs timing by 250µs, which is still within
-	the tolerances stated in the datasheet (600 µs).
+	- The bit 0 timing exceeds the 1.25ï¿½s timing by 250ï¿½s, which is still within
+	the tolerances stated in the datasheet (600 ï¿½s).
 		
 */
 
