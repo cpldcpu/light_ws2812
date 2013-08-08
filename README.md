@@ -72,17 +72,19 @@ Release History
 	- brvs->brcs. Loops terminate correctly (thanks to Mario Pieschel).
 - v0.9 2013/07/29
 	- Added first version of ARM Cortex library
+	- 20 MHz AVR Version contributed by http://github.com/denimjeans
 
 
 Tested Combinations AVR
 ================
 
-| Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz |
-| -------------       |:-------:| :-----: | :------: | :----:| :---:|
-| ATtiny 85 (Standard Core )| X      |  X     |         |       |  X   | 
-| ATtiny 13 (Standard Core)|        |        |    X    |       |     | 
-| ATmega 8 (Standard Core)|        |        |         |   X    |     | 
-| ATtiny 10 (Reduced Core)| X      |  X     |         |       |     | 
+| Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz | 20 Mhz |
+| -------------       |:-------:| :-----: | :------: | :----:| :---:| :---:|
+| ATtiny 85 (Standard Core )| X      |  X     |         |       |  X   |    |
+| ATtiny 13 (Standard Core)|        |        |    X    |       |     |    |
+| ATmega 8 (Standard Core)|        |        |         |   X    |     |    |
+| ATtiny 10 (Reduced Core)| X      |  X     |         |       |     |    |
+| ATmega 168 (Standard Core)|        |        |         |       |     |  X  |
 
 Tested Combinations ARM
 ================
