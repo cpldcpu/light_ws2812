@@ -73,7 +73,8 @@ Release History
 - v0.9 2013/07/29
 	- Added first version of ARM Cortex library
 	- 20 MHz AVR Version contributed by http://github.com/denimjeans
-
+- v0.9b 2013/08/30
+	- Added new example for chained writes.
 
 Tested Combinations AVR
 ================
