@@ -37,6 +37,7 @@ Usage
 - Call "ws2812_sendarray" with a pointer to your LED data and the number of bytes to transmit.
   Each LED receives 3 bytes in Green-Red-Blue order. Therefore the total number of bytes should
   be three times the number of LEDs in the chain.
+- If you are using interrupts, make sure to disable interrupts during the ws2812_sendarray call.
 - Alternatively you can use ws2813_sendarray_mask, which allows to specify one or more output pins
   on the same port.
 - Wait for at least 50 us before the next LED update to reset the chain.
@@ -75,6 +76,8 @@ Release History
 	- 20 MHz AVR Version contributed by http://github.com/denimjeans
 - v0.9b 2013/08/30
 	- Added new example for chained writes.
+- v0.9c 2013/09/08
+	- Updated examples to disable interrupts. 
 
 Tested Combinations AVR
 ================
