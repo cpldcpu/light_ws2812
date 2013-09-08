@@ -11,6 +11,7 @@
 
 #include <util/delay.h>
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include "light_ws2812.h"
 
 struct CRGB { uint8_t g; uint8_t r; uint8_t b; };
@@ -33,16 +34,22 @@ int main(void)
 	
 	while(1)
     {
+		sei();										// Disable interrupts. Can be ommited if no interrupts are used.
 		led[0].r=255;led[0].g=00;led[0].b=0;		// Write red to array
 		ws2812_sendarray((uint8_t *)&led[0],3);		// Send array to WS2812 LED. The output pin is low after send.
+		cli();										// Enable interrupts.
 		_delay_ms(500);								// Issue reset and wait for 500ms.
 		
+		sei();
 		led[0].r=0;led[0].g=255;led[0].b=0;			// green
 		ws2812_sendarray((uint8_t *)&led[0],3);
+		cli();
 		_delay_ms(500);
 
+		sei();
 		led[0].r=0;led[0].g=00;led[0].b=255;		// blue
 		ws2812_sendarray((uint8_t *)&led[0],3);
+		cli();
 		_delay_ms(500);	
     }
 }
