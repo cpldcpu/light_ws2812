@@ -44,7 +44,7 @@ int main(void)
 	while(1)
     {
 	
-		sei();												// Disable interrupts. Can be removed if no interrupts are used.
+		cli();												// Disable interrupts. Can be removed if no interrupts are used.
 		for (i=0; i<pos; i++) 
 			ws2812_sendarray((uint8_t *)&led[0],3);			// Repeatedly send "red" to the led string. 
 															// No more than 1-2µs should pass between calls
@@ -52,7 +52,7 @@ int main(void)
 		for (i=0; i<(16-pos); i++) 
 			ws2812_sendarray((uint8_t *)&led[1],3);			// white
 			
-		cli();												// Enable interrupts.
+		sei();												// Enable interrupts.
 		
 		_delay_ms(50);										// Issue reset and wait for 50 ms.
 		
