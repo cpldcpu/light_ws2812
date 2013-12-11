@@ -28,28 +28,22 @@ int main(void)
 	#else
 		CLKPR=_BV(CLKPCE);
 		CLKPR=0;			// set clock prescaler to 1 (attiny 25/45/85/24/44/84/13/13A)		
-		mask=_BV(PB4);
+		mask=_BV(PB0);
 	#endif
 		DDRB|=mask;
 	
 	while(1)
     {
-		cli();										// Disable interrupts. Can be ommited if no interrupts are used.
 		led[0].r=255;led[0].g=00;led[0].b=0;		// Write red to array
 		ws2812_sendarray((uint8_t *)&led[0],3);		// Send array to WS2812 LED. The output pin is low after send.
-		sei();										// Enable interrupts.
 		_delay_ms(500);								// Issue reset and wait for 500ms.
 		
-		cli();
 		led[0].r=0;led[0].g=255;led[0].b=0;			// green
 		ws2812_sendarray((uint8_t *)&led[0],3);
-		sei();
 		_delay_ms(500);
 
-		cli();
 		led[0].r=0;led[0].g=00;led[0].b=255;		// blue
 		ws2812_sendarray((uint8_t *)&led[0],3);
-		sei();
 		_delay_ms(500);	
     }
 }

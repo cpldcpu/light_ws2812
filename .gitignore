@@ -22,3 +22,5 @@ light_ws2812\Release\*
 *.exe
 *.out
 *.app
+
+light_ws2812_AVR/Debug/*

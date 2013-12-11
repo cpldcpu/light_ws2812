@@ -15,6 +15,7 @@
  *										 9.6 Mhz which is marginally off.			
  *			03.06.2013			- v0.8 - 9.6 Mhz implementation now within specifications.
  *								-		 brvs->brcs. Loops terminate correctly
+ *			11.12.3013			- v1.0 - added irq disable again
  *  Author: Tim (cpldcpu@gmail.com) 
  */ 
 
@@ -68,6 +69,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 
 void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
+	irq_disable
 	uint8_t curbyte,ctr,masklo;
 	masklo	=~maskhi&ws2812_port;
 	maskhi |=ws2812_port;
@@ -102,6 +104,7 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 		:	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo)
 		);
 	}
+	irq_restore
 }
 
 
@@ -128,6 +131,7 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 
 void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
+	irq_disable
 	uint8_t curbyte,ctr,masklo;
 	masklo	=~maskhi&ws2812_port;
 	maskhi |=ws2812_port;
@@ -163,6 +167,7 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 		:	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo) 
 		);
 	}
+	irq_restore
 }
 
 
@@ -190,7 +195,8 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 
 void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
-	uint8_t curbyte,ctr,masklo;
+	irq_disable
+	uint8_t curbyte=0,ctr,masklo;
 	masklo=~maskhi;
 	
 	asm volatile(
@@ -220,6 +226,7 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 	:	"=&d" (ctr)
 	:	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo), "x" (data), "r" (datlen)
 	);
+	irq_restore
 }
 
 /*
@@ -242,7 +249,8 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 
 void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
-	uint8_t curbyte,ctr,masklo;
+	irq_disable	
+	uint8_t curbyte=0,ctr,masklo;
 	masklo=~maskhi;
 	
 	asm volatile(
@@ -269,6 +277,8 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 	:	"=&d" (ctr)
 	:	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo), "x" (data), "r" (datlen)
 	);
+	
+	irq_restore
 }
 
 /*
@@ -295,7 +305,8 @@ Final timing:
 
 void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
-	uint8_t curbyte,ctr,masklo;
+	irq_disable
+	uint8_t curbyte=0,ctr,masklo;
 	masklo=~maskhi;
 	
 	asm volatile(
@@ -323,6 +334,7 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 	:	"=&d" (ctr)
 	:	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo), "x" (data), "r" (datlen)
 	);
+	irq_restore
 }
 
 
@@ -350,6 +362,7 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 
 void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
+	irq_disable
 	uint8_t curbyte,ctr,masklo;
 	masklo	=~maskhi&ws2812_port;
 	maskhi |=ws2812_port;
@@ -411,7 +424,8 @@ void ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 	:	"=&d" (ctr), "=&d" (curbyte)
 	:	 "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "x" (data), "r" (datlen), "r" (masklo)
 	);
-
+	
+	irq_restore
 }
 
 #else

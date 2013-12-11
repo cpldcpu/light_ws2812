@@ -44,6 +44,19 @@ Usage
 
 A simple example is provided in "test_rgb_blinky.c"
 
+Troubleshooting 
+================
+
+Only a part of the string is lighting up / all the colours are wrong
+* Please check whether the correct array length was passed to the call. The value to by passed is the array-length in bytes.
+Therefore you have to pass the number of LEDs multiplied by three.
+
+The LEDs are flickering and not showing the intended colour
+* Are you using a bypass capacitor for each LEDs as indicated in the datasheet? Not using a bypass capacitor will lead to erroneous behaviour.
+* Is your power supply able to supply the required current-level? If set to white at maximum brightness, each LED will require 60mA. A single USB-Port is barely able to supply 10 LEDs.
+* Did you choose the correct CPU frequency setting? Maybe you multiplier setting is wrong?
+* Is anything interrupting correct executing of the write-calls? Interrupts? Watch-dog?     
+
 Release History
 ================
 
@@ -78,6 +91,8 @@ Release History
 	- Added new example for chained writes.
 - v0.9c 2013/09/08
 	- Updated examples to disable interrupts. 
+- v1.0 2013/12/11	
+	- Moved IRQ disabling to library again.
 
 Tested Combinations AVR
 ================
