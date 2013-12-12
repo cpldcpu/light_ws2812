@@ -47,15 +47,14 @@ A simple example is provided in "test_rgb_blinky.c"
 Troubleshooting 
 ================
 
-Only a part of the string is lighting up / all the colours are wrong
-* Please check whether the correct array length was passed to the call. The value to by passed is the array-length in bytes.
-Therefore you have to pass the number of LEDs multiplied by three.
+Only a part of the string is lighting up / all the colours are wrong.
+* Please verify whether the correct array size was passed to the call. The function takes the array-size in bytes. Therefore you have to pass the number of LEDs multiplied by three.
 
-The LEDs are flickering and not showing the intended colour
+The LEDs are flickering and not showing the intended colour.
 * Are you using a bypass capacitor for each LEDs as indicated in the datasheet? Not using a bypass capacitor will lead to erroneous behaviour.
 * Is your power supply able to supply the required current-level? If set to white at maximum brightness, each LED will require 60mA. A single USB-Port is barely able to supply 10 LEDs.
-* Did you choose the correct CPU frequency setting? Maybe you multiplier setting is wrong?
-* Is anything interrupting correct executing of the write-calls? Interrupts? Watch-dog?     
+* Did you choose the correct CPU frequency setting? Did you initialize the clock correctly?
+* Is anything interfering with the timing of the library? Interrupts? Watch-dog? Flash wait states (only relevant to ARM)?    
 
 Release History
 ================
