@@ -1,7 +1,7 @@
 light_ws2812
 ============
 
-Light weight library to control WS2811/WS2812 based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers.
+Light weight library to control WS2811/WS2812/WS2812B based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers.
 
 [See the library in action on a LPC810](http://www.youtube.com/watch?v=Uwxt7SuSV7Y)
 
@@ -55,7 +55,9 @@ The LEDs are flickering and not showing the intended colour.
 * Are you using a bypass capacitor for each LEDs as indicated in the datasheet? Not using a bypass capacitor will lead to erroneous behaviour.
 * Is your power supply able to supply the required current-level? If set to white at maximum brightness, each LED will require 60mA. A single USB-Port is barely able to supply 10 LEDs.
 * Did you choose the correct CPU frequency setting? Did you initialize the clock correctly?
-* Is anything interfering with the timing of the library? Interrupts? Watch-dog? Flash wait states (only relevant to ARM)?    
+* Is anything interfering with the timing of the library? Interrupts? Watch-dog? Flash wait states (only relevant to ARM)?  
+* Is your reset delay long enough? 
+* Note: Different revisions of the WS2812(B) datasheet show conflicting specifications for the time timing. From experience, the protocol is fairly insensitive to timing variations and all of the given numbers work. 
 
 Release History
 ================
