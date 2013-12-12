@@ -49,6 +49,7 @@ Troubleshooting
 
 Only a part of the string is lighting up / all the colours are wrong.
 * Please verify whether the correct array size was passed to the call. The function takes the array-size in bytes. Therefore you have to pass the number of LEDs multiplied by three.
+* The array size needs to be a 16 bit variable. (uint16_t)
 
 The LEDs are flickering and not showing the intended colour.
 * Are you using a bypass capacitor for each LEDs as indicated in the datasheet? Not using a bypass capacitor will lead to erroneous behaviour.
