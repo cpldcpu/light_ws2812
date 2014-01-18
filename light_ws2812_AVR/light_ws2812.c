@@ -1,10 +1,10 @@
 /*
-* light weight WS2812 lib V2.0a
+* light weight WS2812 lib V2.0b
 *
 * Controls WS2811/WS2812/WS2812B RGB-LEDs
-*
-* Created Jan 11th, 2014  v2.0a Initial Version
 * Author: Tim (cpldcpu@gmail.com)
+*
+* Jan 18th, 2014  v2.0b Initial Version
 */
 
 #include "light_ws2812.h"
@@ -12,53 +12,75 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-void inline ws2812_sendarray_mask(uint8_t *, uint16_t , uint8_t);
-
-#ifdef ws2812_pin
 void inline ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
 {
-  *(&ws2812_port-1) |= _BV(ws2812_pin); // Enable DDR
-  ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,_BV(ws2812_pin));
-  _delay_us(50); 
+   ws2812_setleds_pin(ledarray,leds, _BV(ws2812_pin));
+}
+
+void inline ws2812_setleds_pin(struct cRGB *ledarray, uint16_t leds, uint8_t pinmask)
+{
+  ws2812_DDRREG |= _BV(ws2812_pin); // Enable DDR
+  ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
+  _delay_us(50);
 }
 
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
   ws2812_sendarray_mask(data,datlen,_BV(ws2812_pin));
 }
-#endif
-
-void inline ws2812_setleds_mask(struct cRGB *ledarray, uint16_t leds, uint8_t pinmask)
-{
-  *(&ws2812_port-1) |= pinmask; // Enable DDR
-  ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
-  _delay_us(50);
-}
-
 
 /*
-This routine writes an array of bytes with RGB values to the Dataout pin
-using the fast 800kHz clockless WS2811/2812 protocol.
+  This routine writes an array of bytes with RGB values to the Dataout pin
+  using the fast 800kHz clockless WS2811/2812 protocol.
 */
 
-#if F_CPU>=8000000
-#elif F_CPU>=4000000
-#warning "The WS2812 timing for 4 MHz CPU clock is critical, see documentation."
-#warning "If you experience problems you should consider using at least 8 MHz CPU clock."
-#else
-#error "Sorry, clock speeds below 4MHz are not supported. Did you set the define F_CPU correctly?"
-#endif
+// Timing in ns
+#define w_lowpulse     350
+#define w_highpulse    900
+#define w_totalperiod 1250
 
-// Fixed instructions in loop take 8 cycles on all architectures
-#define w1_fixedcycles 8   
+// Fixed cycles used by the inner loop
+#define w_fixedlow    2
+#define w_fixedhigh   4
+#define w_fixedtotal  8   
 
-// Insert NOPs so the total loop execution time is 1.25µs or more
-#define w1_totaldelay	(((F_CPU/1000)*1250)/1000000)-w1_fixedcycles
+// Insert NOPs to match the timing, if possible
+#define w_lowcycles    (((F_CPU/1000)*w_lowpulse          )/1000000)
+#define w_highcycles   (((F_CPU/1000)*w_highpulse  +500000)/1000000)
+#define w_totalcycles  (((F_CPU/1000)*w_totalperiod+500000)/1000000)
 
-#if w1_totaldelay>0
-  #define w1_nops w_totaldelay
+// w1 - nops between rising edge and falling edge - low
+#define w1 (w_lowcycles-w_fixedlow)
+// w2   nops between fe low and fe high
+#define w2 (w_highcycles-w_fixedhigh-w1)
+// w3   nops to complete loop
+#define w3 (w_totalcycles-w_fixedtotal-w1-w2)
+
+#if w1>0
+  #define w1_nops w1
 #else
   #define w1_nops  0
+#endif
+
+// calculate critical low timing
+#define w_lowtime ((w1_nops+w_fixedlow)*1000000)/(F_CPU/1000)
+#if w_lowtime>550
+   #error "Light_ws2812: Sorry, the clock speed is too low. Did you set F_CPU correctly?"
+#elif w_lowtime>450
+   #warning "Light_ws2812: The timing is critical and may only work on WS2812B, not on WS2812(S)."
+   #warning "Please consider a higher clockspeed, if possible"
+#endif   
+
+#if w2>0
+#define w2_nops w2
+#else
+#define w2_nops  0
+#endif
+
+#if w3>0
+#define w3_nops w3
+#else
+#define w3_nops  0
 #endif
 
 #define w_nop1  "nop      \n\t"
@@ -72,8 +94,8 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
   uint8_t curbyte,ctr,masklo;
   uint8_t sreg_prev;
   
-  masklo	=~maskhi&ws2812_port;
-  maskhi |=        ws2812_port;
+  masklo	=~maskhi&ws2812_PORTREG;
+  maskhi |=        ws2812_PORTREG;
   sreg_prev=SREG;
   cli();  
 
@@ -83,30 +105,61 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
     asm volatile(
     "       ldi   %0,8  \n\t"
     "loop%=:            \n\t"
-    "       out   %2,%3 \n\t"    //  '1' [01] '0' [01]
-    "       sbrs  %1,7  \n\t"    //  '1' [03] '0' [02]
-    "       out   %2,%4 \n\t"    //  '1' [--] '0' [03]
-    "       lsl   %1    \n\t"    //  '1' [04] '0' [04]
-    "       dec   %0    \n\t"    //  '1' [05] '0' [05]
+    "       out   %2,%3 \n\t"    //  '1' [01] '0' [01] - re
 #if (w1_nops&1)
-  w_nop1
+w_nop1
 #endif
 #if (w1_nops&2)
-  w_nop2
+w_nop2
 #endif
 #if (w1_nops&4)
-  w_nop4
+w_nop4
 #endif
 #if (w1_nops&8)
-  w_nop8
+w_nop8
 #endif
 #if (w1_nops&16)
+w_nop16
+#endif
+    "       sbrs  %1,7  \n\t"    //  '1' [03] '0' [02]
+    "       out   %2,%4 \n\t"    //  '1' [--] '0' [03] - fe-low
+    "       lsl   %1    \n\t"    //  '1' [04] '0' [04]
+#if (w2_nops&1)
+  w_nop1
+#endif
+#if (w2_nops&2)
+  w_nop2
+#endif
+#if (w2_nops&4)
+  w_nop4
+#endif
+#if (w2_nops&8)
+  w_nop8
+#endif
+#if (w2_nops&16)
   w_nop16 
 #endif
-    "       out   %2,%4 \n\t"    //  '1' [+1] '0' [+1]
-    "       brne  loop%=\n\t"    //  '1' [+3] '0' [+3]
+    "       out   %2,%4 \n\t"    //  '1' [+1] '0' [+1] - fe-high
+#if (w3_nops&1)
+w_nop1
+#endif
+#if (w3_nops&2)
+w_nop2
+#endif
+#if (w3_nops&4)
+w_nop4
+#endif
+#if (w3_nops&8)
+w_nop8
+#endif
+#if (w3_nops&16)
+w_nop16
+#endif
+
+    "       dec   %0    \n\t"    //  '1' [+2] '0' [+2]
+    "       brne  loop%=\n\t"    //  '1' [+3] '0' [+4]
     :	"=&d" (ctr)
-    :	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_port)), "r" (maskhi), "r" (masklo)
+    :	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_PORTREG)), "r" (maskhi), "r" (masklo)
     );
   }
   
