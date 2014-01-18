@@ -1,6 +1,8 @@
 /*
 * light weight WS2812 lib V2.0a
 *
+* Controls WS2811/WS2812/WS2812B RGB-LEDs
+*
 * Created Jan 11th, 2014  v2.0a Initial Version
 * Author: Tim (cpldcpu@gmail.com)
 */
@@ -8,39 +10,35 @@
 #include "light_ws2812.h"
 #include <avr/interrupt.h>
 #include <avr/io.h>
+#include <util/delay.h>
 
 void inline ws2812_sendarray_mask(uint8_t *, uint16_t , uint8_t);
+
+#ifdef ws2812_pin
+void inline ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
+{
+  *(&ws2812_port-1) |= _BV(ws2812_pin); // Enable DDR
+  ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,_BV(ws2812_pin));
+  _delay_us(50); 
+}
 
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
   ws2812_sendarray_mask(data,datlen,_BV(ws2812_pin));
+}
+#endif
+
+void inline ws2812_setleds_mask(struct cRGB *ledarray, uint16_t leds, uint8_t pinmask)
+{
+  *(&ws2812_port-1) |= pinmask; // Enable DDR
+  ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
+  _delay_us(50);
 }
 
 
 /*
 This routine writes an array of bytes with RGB values to the Dataout pin
 using the fast 800kHz clockless WS2811/2812 protocol.
-
-The description of the protocol in the datasheet is somewhat confusing and
-it appears that some timing values have been rounded.
-
-The order of the color-data is GRB 8:8:8. Serial data transmission begins
-with the most significant bit in each byte.
-
-The total length of each bit is 1.25µs (20 cycles @ 16Mhz)
-* At 0µs the dataline is pulled high.
-* To send a zero the dataline is pulled low after 0.375µs (6 cycles).
-* To send a one the dataline is pulled low after 0.625µs (10 cycles).
-
-After the entire bitstream has been written, the dataout pin has to remain low
-for at least 50µS (reset condition).
-
-Due to the loop overhead there is a slight timing error: The loop will execute
-in 21 cycles for the last bit write. This does not cause any issues though,
-as only the timing between the rising and the falling edge seems to be critical.
-Some quick experiments have shown that the bitstream has to be delayed by
-more than 3µs until it cannot be continued (3µs=48 cyles).
-
 */
 
 #if F_CPU>=8000000
@@ -52,19 +50,19 @@ more than 3µs until it cannot be continued (3µs=48 cyles).
 #endif
 
 // Fixed instructions in loop take 8 cycles on all architectures
-#define w_fixedcycles 8   
+#define w1_fixedcycles 8   
 
 // Insert NOPs so the total loop execution time is 1.25µs or more
-#define w_totaldelay	(((F_CPU/1000)*1250)/1000000)-w_fixedcycles
+#define w1_totaldelay	(((F_CPU/1000)*1250)/1000000)-w1_fixedcycles
 
-#if w_totaldelay>0
-  #define w_nops w_totaldelay
+#if w1_totaldelay>0
+  #define w1_nops w_totaldelay
 #else
-  #define w_nops  0
+  #define w1_nops  0
 #endif
 
-#define w_nop1  "	nop		    \n\t"
-#define w_nop2  "	rjmp .+0	\n\t"
+#define w_nop1  "nop      \n\t"
+#define w_nop2  "rjmp .+0 \n\t"
 #define w_nop4  w_nop2 w_nop2
 #define w_nop8  w_nop4 w_nop4
 #define w_nop16 w_nop8 w_nop8
@@ -72,12 +70,12 @@ more than 3µs until it cannot be continued (3µs=48 cyles).
 void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
   uint8_t curbyte,ctr,masklo;
-  uint8_t sreg_prev=SREG;
-  
-  cli();
+  uint8_t sreg_prev;
   
   masklo	=~maskhi&ws2812_port;
   maskhi |=        ws2812_port;
+  sreg_prev=SREG;
+  cli();  
 
   while (datlen--) {
     curbyte=*data++;
@@ -90,19 +88,19 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
     "       out   %2,%4 \n\t"    //  '1' [--] '0' [03]
     "       lsl   %1    \n\t"    //  '1' [04] '0' [04]
     "       dec   %0    \n\t"    //  '1' [05] '0' [05]
-#if (w_nops&1)
+#if (w1_nops&1)
   w_nop1
 #endif
-#if (w_nops&2)
+#if (w1_nops&2)
   w_nop2
 #endif
-#if (w_nops&4)
+#if (w1_nops&4)
   w_nop4
 #endif
-#if (w_nops&8)
+#if (w1_nops&8)
   w_nop8
 #endif
-#if (w_nops&16)
+#if (w1_nops&16)
   w_nop16 
 #endif
     "       out   %2,%4 \n\t"    //  '1' [+1] '0' [+1]

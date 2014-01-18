@@ -17,8 +17,12 @@
 // Call with address to led color array (order is Green-Red-Blue)
 // Numer of bytes to be transmitted is leds*3
 
-void ws2812_sendarray(uint8_t *ledarray,uint16_t length);
-void ws2812_sendarray_mask(uint8_t *ledarray,uint16_t length, uint8_t mask);
+struct cRGB { uint8_t g; uint8_t r; uint8_t b; };
+  
+void ws2812_sendarray(uint8_t *array,uint16_t length);
+void ws2812_sendarray_mask(uint8_t *array,uint16_t length, uint8_t pinmask);
+void ws2812_setleds(struct cRGB *ledarray, uint16_t number_of_leds);
+void ws2812_setleds_mask(struct cRGB *ledarray, uint16_t number_of_leds,uint8_t pinmask);
 
 ///////////////////////////////////////////////////////////////////////
 // User defined area: Define I/O pin
