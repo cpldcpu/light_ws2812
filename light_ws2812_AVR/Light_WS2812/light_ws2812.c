@@ -5,6 +5,8 @@
 * Author: Tim (cpldcpu@gmail.com)
 *
 * Jan 18th, 2014  v2.0b Initial Version
+*
+* License: GNU GPL v2 (see License.txt)
 */
 
 #include "light_ws2812.h"
