@@ -1,7 +1,7 @@
 light_ws2812 V2
 ============
 
-Light weight library to control WS2811/WS2812/WS2812B based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers. The new version 2 of this library supports a simplified interface.
+Light weight library to control WS2811/WS2812/WS2812B based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers. The new version 2 of this library supports a simplified interface and arbitrary CPU clock.
 
 [See the library in action on a LPC810](http://www.youtube.com/watch?v=Uwxt7SuSV7Y)
 
@@ -13,7 +13,7 @@ high-speed mode is supported. This library uses a bit-banging approach with cycl
 innerloops. Some advantages of this approach compared to other solutions are:
 
 - Compatible to all AVR MCUs since it does not rely on special periphery.
-- The code is automatically adjusted for CPU clock speeds from 4 Mhz up to the maximum on AVR.
+- The code timing is automatically adjusted for CPU clock speeds from 4 Mhz up to the maximum on AVR.
 - Much smaller program code: Size optimized assembler without unrolled loops (<50 bytes in most cases)
 - Supports standard AVR, reduced core AVR (Attiny 4/5/9/10/20/40) and XMEGA (untested) without special case handling.
 - Arduino or C++ not required
@@ -30,7 +30,7 @@ Usage
 - Call "ws2812_setleds" with a pointer to the LED array and the number LEDs.
 - Alternatively you can use "ws2812_setleds_pin" to control up to 8 LED strips on the same Port.
 
-Examples are provided in the [Example](https://github.com/cpldcpu/light_ws2812/tree/master/light_ws2812_AVR/Examples) folder. You can build them with the supplied makefile.
+Examples are provided in the [Examples](https://github.com/cpldcpu/light_ws2812/tree/master/light_ws2812_AVR/Examples) folder. You can build them with the supplied makefile.
 
 Troubleshooting 
 ================
