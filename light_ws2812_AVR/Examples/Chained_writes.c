@@ -21,7 +21,7 @@ struct cRGB led[2];
 
 int main(void)
 {
-	uint8_t mask;
+
 	uint8_t pos=0;
 	uint8_t direction=1;	
 	uint8_t i;
@@ -29,13 +29,13 @@ int main(void)
 	#ifdef __AVR_ATtiny10__
 		CCP=0xD8;		// configuration change protection, write signature
 		CLKPSR=0;		// set cpu clock prescaler =1 (8Mhz) (attiny 4/5/9/10)
-		mask=_BV(PB2);
+
 	#else
 		CLKPR=_BV(CLKPCE);
 		CLKPR=0;			// set clock prescaler to 1 (attiny 25/45/85/24/44/84/13/13A)		
-		mask=_BV(PB0);
+
 	#endif
-		DDRB|=mask;
+		DDRB|=_BV(ws2812_pin);
 
 	led[0].r=16;led[0].g=00;led[0].b=00;		// LED 0 is red
 	led[1].r=16;led[1].g=16;led[1].b=16;		// LED 1 is White
