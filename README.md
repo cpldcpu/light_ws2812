@@ -1,7 +1,7 @@
-light_ws2812
+light_ws2812 V2
 ============
 
-Light weight library to control WS2811/WS2812/WS2812B based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers.
+Light weight library to control WS2811/WS2812/WS2812B based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers. The new version 2 of this library supports a simplified interface.
 
 [See the library in action on a LPC810](http://www.youtube.com/watch?v=Uwxt7SuSV7Y)
 
@@ -10,91 +10,51 @@ Description
 
 This is a small Ansi-C library to control WS2811/WS2812 based RGB Leds and strings. Only the 800kHz
 high-speed mode is supported. This library uses a bit-banging approach with cycle optimized assembler
-innerloops. Some advantages of this approach compared to existing solutions are:
+innerloops. Some advantages of this approach compared to other solutions are:
 
 - Compatible to all AVR MCUs since it does not rely on special periphery.
-- Low hardware footprint: Does not rely on any timer or the USI
+- The code is automatically adjusted for CPU clock speeds from 4 Mhz up to the maximum on AVR.
 - Much smaller program code: Size optimized assembler without unrolled loops (<50 bytes in most cases)
-- No initialization required
-- Carefully optimized to use instructions which are available on all AVR cores and have the same instruction timing across all devices.
 - Supports standard AVR, reduced core AVR (Attiny 4/5/9/10/20/40) and XMEGA (untested) without special case handling.
-- New:Supports Cortex ARM cores.
 - Arduino or C++ not required
-- Clock speeds down to 4Mhz supported.
+- New: Experimental Cortex-M0 ARM core.
 
-A disadvantage of this approach is that the code has to be hand optimized for each CPU clockspeed. 
-However, a number of different routines are provided which support CPU clocks from 4Mhz to 16Mhz.
+The timing values used in the library were adjusted to work on all devices. [Look here for details](http://cpldcpu.wordpress.com/2014/01/14/light_ws2812-library-v2-0-part-i-understanding-the-ws2812/)
 
 Usage
 =====
 
-- Add "light_ws2812.c" and "light_ws2812.h" to your project.
-- Make sure optimizations are enabled in the compiler.
-- Change ws2812_port and ws2812_pin in the include file according to the I/O pin you are using.
-- Uncomment the #define appropiate for your clock settings. If your exact clock is not supported, 
-  try a higher or lower clock setting. The WS2811 controller chip is tolerant to some timing inaccuracy.
-- Set the data output register for the output pin you are using.
-- Call "ws2812_sendarray" with a pointer to your LED data and the number of bytes to transmit.
-  Each LED receives 3 bytes in Green-Red-Blue order. Therefore the total number of bytes should
-  be three times the number of LEDs in the chain.
-- If you are using interrupts, make sure to disable interrupts during the ws2812_sendarray call.
-- Alternatively you can use ws2813_sendarray_mask, which allows to specify one or more output pins
-  on the same port.
-- Wait for at least 50 us before the next LED update to reset the chain.
+- Add "light_ws2812.c", "light_ws2812.h" and "ws2812_config.h" to your project. 
+- Update "ws2812_config.h" according to your I/O pin.
+- Make sure F_CPU is correctly defined in your makefile or the project. (For AtmelStudio: Project->Properties->Toolchain->AVR/GNU C Compiler->Symbols. Add symbol F_CPU=xxxxx)
+- Call "ws2812_setleds" with a pointer to the LED array and the number LEDs.
+- Alternatively you can use "ws2812_setleds_pin" to control up to 8 LED strips on the same Port.
 
-A simple example is provided in "test_rgb_blinky.c"
+Examples are provided in the [Example](https://github.com/cpldcpu/light_ws2812/tree/master/light_ws2812_AVR/Examples) folder. You can build them with the supplied makefile.
 
 Troubleshooting 
 ================
+Please note that incorrect timing is rarely the source of problems. If you want to save some time, go through the items below before altering the library.
 
-Only a part of the string is lighting up / all the colours are wrong.
-* Please verify whether the correct array size was passed to the call. The function takes the array-size in bytes. Therefore you have to pass the number of LEDs multiplied by three.
-* The array size needs to be a 16 bit variable. (uint16_t)
+None or only a part of the string is lighting up.
+* Did you pass the correct array size in the function call?
+* Is the pin configuration correct?
+* Is anything else connected to the output pin you are using? Some development boards have LEDs connected to various pins.
+* Did you choose the correct CPU frequency setting? Did you initialize the clock correctly?
 
 The LEDs are flickering and not showing the intended colour.
-* Are you using a bypass capacitor for each LEDs as indicated in the datasheet? Not using a bypass capacitor will lead to erroneous behaviour.
-* Is your power supply able to supply the required current-level? If set to white at maximum brightness, each LED will require 60mA. A single USB-Port is barely able to supply 10 LEDs.
-* Did you choose the correct CPU frequency setting? Did you initialize the clock correctly?
-* Is anything interfering with the timing of the library? Interrupts? Watch-dog? Flash wait states (only relevant to ARM)?  
-* Is your reset delay long enough? 
-* Note: Different revisions of the WS2812(B) datasheet show conflicting specifications for the time timing. From experience, the protocol is fairly insensitive to timing variations and all of the given numbers work. 
+* This is usually a problem with insufficient current sourcing capability.
+* Are you using a bypass capacitor for each LEDs as indicated in the datasheet? Not using a bypass capacitor will lead to erroneous behaviour. 
+* You may have to add an additional electrolytic capacitor at the input of your LED strip if you use long power supply lines.
+* Is your power supply able to supply the required current-level? If set to white at maximum brightness, each LED will draw 60mA. A single USB-Port is barely able to supply 10 LEDs.
 
 Release History
 ================
 
-- v0.3 2013/05/06 
-	- Initial release. Thanks to "Matthias H." for testing with a longer led chain.
-- v0.4 2013/05/07 
-	- General clean up 
-	- Some code size optimizations. Thanks to "Fallobst" for suggestions 
-	- Disabled interrupts in the critical sections.
-- v0.5 2013/05/20
-	- Fixed timing bug from size optimization
-- v0.6 2013/05/27
-	- Major update: Changed all port accesses from SBI/CBI to OUT. This removes 
-	a timing inconsistency between reduced core AVR and standard AVR, avoiding separate
-	implementations for different cores. A disadvantage is increase register usage.
-	- Added the "ws2812_sendarray_mask" function which allows to pass a bitmask for the
-	 selected port. This allows controlling up to 8 independent LED strips.
-	- Removed functions for interrupt handling. Avoiding interference with interrupts
-	is now up to the user. 
-	- 4 MHz clock speed is now also supported for standard core AVRs.
-- v0.7 2013/05/28
-	- Optimized timing and size of 8 and 12 Mhz routines. All routines are within 
-	  datasheet specs now, except of 9.6 Mhz which is marginally off but works under
-	  all test conditions	
-- v0.8 2013/06/03
-	- 9.6 Mhz implementation now within specifications.
-	- brvs->brcs. Loops terminate correctly (thanks to Mario Pieschel).
-- v0.9 2013/07/29
-	- Added first version of ARM Cortex library
-	- 20 MHz AVR Version contributed by http://github.com/denimjeans
-- v0.9b 2013/08/30
-	- Added new example for chained writes.
-- v0.9c 2013/09/08
-	- Updated examples to disable interrupts. 
-- v1.0 2013/12/11	
-	- Moved IRQ disabling to library again.
+- v2.0b 2014/01/19
+	- Initial release of V2 lib with new interface and architecture.
+
+You can find the old V1 here: https://github.com/cpldcpu/light_ws2812/tree/v1.0
 
 Tested Combinations AVR
 ================
@@ -116,10 +76,4 @@ Tested Combinations ARM
 Please find updates on https://github.com/cpldcpu/light_ws2812
 
 bug reports etc: cpldcpu@gmail.com
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/ca077646771bb9d7a3fa1c399ece0e32 "githalytics.com")](http://githalytics.com/cpldcpu/light_ws2812)
-
-
-
-
 

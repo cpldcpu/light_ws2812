@@ -1,12 +1,10 @@
 # Don't commit compiler output
-\Debug\*
-\Release\*
-light_ws2812\Debug\*
-light_ws2812\Release\*
-
+light_ws2812\Objects\*
 
 # Object files
 *.o
+*.hex
+*.lss
 
 # Libraries
 *.lib
@@ -22,5 +20,3 @@ light_ws2812\Release\*
 *.exe
 *.out
 *.app
-
-light_ws2812_AVR/Debug/*
