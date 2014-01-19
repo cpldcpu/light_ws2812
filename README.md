@@ -19,7 +19,7 @@ innerloops. Some advantages of this approach compared to other solutions are:
 - Arduino or C++ not required
 - New: Experimental Cortex-M0 ARM core.
 
-The timing values used in the library were adjusted to work on all devices. [Look here for details](http://cpldcpu.wordpress.com/2014/01/14/light_ws2812-library-v2-0-part-i-understanding-the-ws2812/)
+The timing values used in the library were adjusted to work on all devices. Look [here](http://cpldcpu.wordpress.com/2014/01/14/light_ws2812-library-v2-0-part-i-understanding-the-ws2812/) and [here](http://cpldcpu.wordpress.com/2014/01/19/light_ws2812-library-v2-0/) for details.
 
 Usage
 =====
