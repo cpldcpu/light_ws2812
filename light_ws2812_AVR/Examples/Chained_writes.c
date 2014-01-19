@@ -1,4 +1,6 @@
 /*
+ * ATTENTION: This example uses the old v1.0 interface.
+ *
  * Light_WS2812 library example - Chained Writes
  *
  * This example shows how to use multiple calls without issuing a reset 
@@ -10,15 +12,12 @@
  * the WS2812 string connected to PB4. 
  */ 
 
-#define F_CPU 16000000
-
 #include <util/delay.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "light_ws2812.h"
 
-struct CRGB { uint8_t g; uint8_t r; uint8_t b; };
-struct CRGB led[2];
+struct cRGB led[2];
 
 int main(void)
 {
@@ -29,7 +28,7 @@ int main(void)
 	
 	#ifdef __AVR_ATtiny10__
 		CCP=0xD8;		// configuration change protection, write signature
-		CLKPSR=1;		// set cpu clock prescaler =1 (8Mhz) (attiny 4/5/9/10)
+		CLKPSR=0;		// set cpu clock prescaler =1 (8Mhz) (attiny 4/5/9/10)
 		mask=_BV(PB2);
 	#else
 		CLKPR=_BV(CLKPCE);

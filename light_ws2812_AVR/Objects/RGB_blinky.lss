@@ -1,0 +1,250 @@
+
+Objects/RGB_blinky.o:     file format elf32-avr
+
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0e c0       	rjmp	.+28     	; 0x1e <__ctors_end>
+   2:	1d c0       	rjmp	.+58     	; 0x3e <__bad_interrupt>
+   4:	1c c0       	rjmp	.+56     	; 0x3e <__bad_interrupt>
+   6:	1b c0       	rjmp	.+54     	; 0x3e <__bad_interrupt>
+   8:	1a c0       	rjmp	.+52     	; 0x3e <__bad_interrupt>
+   a:	19 c0       	rjmp	.+50     	; 0x3e <__bad_interrupt>
+   c:	18 c0       	rjmp	.+48     	; 0x3e <__bad_interrupt>
+   e:	17 c0       	rjmp	.+46     	; 0x3e <__bad_interrupt>
+  10:	16 c0       	rjmp	.+44     	; 0x3e <__bad_interrupt>
+  12:	15 c0       	rjmp	.+42     	; 0x3e <__bad_interrupt>
+  14:	14 c0       	rjmp	.+40     	; 0x3e <__bad_interrupt>
+  16:	13 c0       	rjmp	.+38     	; 0x3e <__bad_interrupt>
+  18:	12 c0       	rjmp	.+36     	; 0x3e <__bad_interrupt>
+  1a:	11 c0       	rjmp	.+34     	; 0x3e <__bad_interrupt>
+  1c:	10 c0       	rjmp	.+32     	; 0x3e <__bad_interrupt>
+
+0000001e <__ctors_end>:
+  1e:	11 24       	eor	r1, r1
+  20:	1f be       	out	0x3f, r1	; 63
+  22:	cf e5       	ldi	r28, 0x5F	; 95
+  24:	d2 e0       	ldi	r29, 0x02	; 2
+  26:	de bf       	out	0x3e, r29	; 62
+  28:	cd bf       	out	0x3d, r28	; 61
+
+0000002a <__do_clear_bss>:
+  2a:	20 e0       	ldi	r18, 0x00	; 0
+  2c:	a0 e6       	ldi	r26, 0x60	; 96
+  2e:	b0 e0       	ldi	r27, 0x00	; 0
+  30:	01 c0       	rjmp	.+2      	; 0x34 <.do_clear_bss_start>
+
+00000032 <.do_clear_bss_loop>:
+  32:	1d 92       	st	X+, r1
+
+00000034 <.do_clear_bss_start>:
+  34:	a3 36       	cpi	r26, 0x63	; 99
+  36:	b2 07       	cpc	r27, r18
+  38:	e1 f7       	brne	.-8      	; 0x32 <.do_clear_bss_loop>
+  3a:	02 d0       	rcall	.+4      	; 0x40 <main>
+  3c:	78 c0       	rjmp	.+240    	; 0x12e <_exit>
+
+0000003e <__bad_interrupt>:
+  3e:	e0 cf       	rjmp	.-64     	; 0x0 <__vectors>
+
+00000040 <main>:
+
+  #ifdef __AVR_ATtiny10__
+  CCP=0xD8;		// configuration change protection, write signature
+  CLKPSR=0;		// set cpu clock prescaler =1 (8Mhz) (attiny 4/5/9/10)
+  #else
+  CLKPR=_BV(CLKPCE);
+  40:	80 e8       	ldi	r24, 0x80	; 128
+  42:	86 bd       	out	0x26, r24	; 38
+  CLKPR=0;			// set clock prescaler to 1 (attiny 25/45/85/24/44/84/13/13A)
+  44:	16 bc       	out	0x26, r1	; 38
+  #endif
+
+
+  while(1)
+  {
+    led[0].r=255;led[0].g=00;led[0].b=0;    // Write red to array
+  46:	8f ef       	ldi	r24, 0xFF	; 255
+  48:	80 93 61 00 	sts	0x0061, r24
+  4c:	10 92 60 00 	sts	0x0060, r1
+  50:	10 92 62 00 	sts	0x0062, r1
+    ws2812_setleds(led,1);
+  54:	61 e0       	ldi	r22, 0x01	; 1
+  56:	70 e0       	ldi	r23, 0x00	; 0
+  58:	80 e6       	ldi	r24, 0x60	; 96
+  5a:	90 e0       	ldi	r25, 0x00	; 0
+  5c:	64 d0       	rcall	.+200    	; 0x126 <ws2812_setleds>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  5e:	2f ef       	ldi	r18, 0xFF	; 255
+  60:	89 e6       	ldi	r24, 0x69	; 105
+  62:	98 e1       	ldi	r25, 0x18	; 24
+  64:	21 50       	subi	r18, 0x01	; 1
+  66:	80 40       	sbci	r24, 0x00	; 0
+  68:	90 40       	sbci	r25, 0x00	; 0
+  6a:	e1 f7       	brne	.-8      	; 0x64 <main+0x24>
+  6c:	00 c0       	rjmp	.+0      	; 0x6e <main+0x2e>
+  6e:	00 00       	nop
+    _delay_ms(500);                         // wait for 500ms.
+
+    led[0].r=0;led[0].g=255;led[0].b=0;			// green
+  70:	10 92 61 00 	sts	0x0061, r1
+  74:	8f ef       	ldi	r24, 0xFF	; 255
+  76:	80 93 60 00 	sts	0x0060, r24
+  7a:	10 92 62 00 	sts	0x0062, r1
+    ws2812_setleds(led,1);
+  7e:	61 e0       	ldi	r22, 0x01	; 1
+  80:	70 e0       	ldi	r23, 0x00	; 0
+  82:	80 e6       	ldi	r24, 0x60	; 96
+  84:	90 e0       	ldi	r25, 0x00	; 0
+  86:	4f d0       	rcall	.+158    	; 0x126 <ws2812_setleds>
+  88:	2f ef       	ldi	r18, 0xFF	; 255
+  8a:	89 e6       	ldi	r24, 0x69	; 105
+  8c:	98 e1       	ldi	r25, 0x18	; 24
+  8e:	21 50       	subi	r18, 0x01	; 1
+  90:	80 40       	sbci	r24, 0x00	; 0
+  92:	90 40       	sbci	r25, 0x00	; 0
+  94:	e1 f7       	brne	.-8      	; 0x8e <main+0x4e>
+  96:	00 c0       	rjmp	.+0      	; 0x98 <main+0x58>
+  98:	00 00       	nop
+    _delay_ms(500);
+
+    led[0].r=0;led[0].g=00;led[0].b=255;		// blue
+  9a:	10 92 61 00 	sts	0x0061, r1
+  9e:	10 92 60 00 	sts	0x0060, r1
+  a2:	8f ef       	ldi	r24, 0xFF	; 255
+  a4:	80 93 62 00 	sts	0x0062, r24
+    ws2812_setleds(led,1);
+  a8:	61 e0       	ldi	r22, 0x01	; 1
+  aa:	70 e0       	ldi	r23, 0x00	; 0
+  ac:	80 e6       	ldi	r24, 0x60	; 96
+  ae:	90 e0       	ldi	r25, 0x00	; 0
+  b0:	3a d0       	rcall	.+116    	; 0x126 <ws2812_setleds>
+  b2:	2f ef       	ldi	r18, 0xFF	; 255
+  b4:	89 e6       	ldi	r24, 0x69	; 105
+  b6:	98 e1       	ldi	r25, 0x18	; 24
+  b8:	21 50       	subi	r18, 0x01	; 1
+  ba:	80 40       	sbci	r24, 0x00	; 0
+  bc:	90 40       	sbci	r25, 0x00	; 0
+  be:	e1 f7       	brne	.-8      	; 0xb8 <main+0x78>
+  c0:	00 c0       	rjmp	.+0      	; 0xc2 <main+0x82>
+  c2:	00 00       	nop
+  c4:	c0 cf       	rjmp	.-128    	; 0x46 <main+0x6>
+
+000000c6 <ws2812_sendarray_mask>:
+void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
+{
+  uint8_t curbyte,ctr,masklo;
+  uint8_t sreg_prev;
+  
+  masklo	=~maskhi&ws2812_PORTREG;
+  c6:	38 b3       	in	r19, 0x18	; 24
+  c8:	24 2f       	mov	r18, r20
+  ca:	20 95       	com	r18
+  cc:	23 23       	and	r18, r19
+  maskhi |=        ws2812_PORTREG;
+  ce:	38 b3       	in	r19, 0x18	; 24
+  d0:	34 2b       	or	r19, r20
+  sreg_prev=SREG;
+  d2:	4f b7       	in	r20, 0x3f	; 63
+  cli();  
+  d4:	f8 94       	cli
+  d6:	fc 01       	movw	r30, r24
+  d8:	68 0f       	add	r22, r24
+  da:	79 1f       	adc	r23, r25
+
+  while (datlen--) {
+  dc:	e6 17       	cp	r30, r22
+  de:	f7 07       	cpc	r31, r23
+  e0:	89 f0       	breq	.+34     	; 0x104 <loop39+0x1e>
+    curbyte=*data++;
+  e2:	81 91       	ld	r24, Z+
+    
+    asm volatile(
+  e4:	98 e0       	ldi	r25, 0x08	; 8
+
+000000e6 <loop39>:
+  e6:	38 bb       	out	0x18, r19	; 24
+  e8:	00 00       	nop
+  ea:	00 c0       	rjmp	.+0      	; 0xec <loop39+0x6>
+  ec:	87 ff       	sbrs	r24, 7
+  ee:	28 bb       	out	0x18, r18	; 24
+  f0:	88 0f       	add	r24, r24
+  f2:	00 00       	nop
+  f4:	00 c0       	rjmp	.+0      	; 0xf6 <loop39+0x10>
+  f6:	00 c0       	rjmp	.+0      	; 0xf8 <loop39+0x12>
+  f8:	00 c0       	rjmp	.+0      	; 0xfa <loop39+0x14>
+  fa:	28 bb       	out	0x18, r18	; 24
+  fc:	00 c0       	rjmp	.+0      	; 0xfe <loop39+0x18>
+  fe:	9a 95       	dec	r25
+ 100:	91 f7       	brne	.-28     	; 0xe6 <loop39>
+ 102:	ec cf       	rjmp	.-40     	; 0xdc <ws2812_sendarray_mask+0x16>
+    :	"=&d" (ctr)
+    :	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_PORTREG)), "r" (maskhi), "r" (masklo)
+    );
+  }
+  
+  SREG=sreg_prev;
+ 104:	4f bf       	out	0x3f, r20	; 63
+ 106:	08 95       	ret
+
+00000108 <ws2812_setleds_pin>:
+   ws2812_setleds_pin(ledarray,leds, _BV(ws2812_pin));
+}
+
+void inline ws2812_setleds_pin(struct cRGB *ledarray, uint16_t leds, uint8_t pinmask)
+{
+  ws2812_DDRREG |= _BV(ws2812_pin); // Enable DDR
+ 108:	b9 9a       	sbi	0x17, 1	; 23
+  ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
+ 10a:	9b 01       	movw	r18, r22
+ 10c:	22 0f       	add	r18, r18
+ 10e:	33 1f       	adc	r19, r19
+ 110:	26 0f       	add	r18, r22
+ 112:	37 1f       	adc	r19, r23
+ 114:	b9 01       	movw	r22, r18
+ 116:	d7 df       	rcall	.-82     	; 0xc6 <ws2812_sendarray_mask>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 118:	87 ec       	ldi	r24, 0xC7	; 199
+ 11a:	90 e0       	ldi	r25, 0x00	; 0
+ 11c:	01 97       	sbiw	r24, 0x01	; 1
+ 11e:	f1 f7       	brne	.-4      	; 0x11c <ws2812_setleds_pin+0x14>
+ 120:	00 c0       	rjmp	.+0      	; 0x122 <ws2812_setleds_pin+0x1a>
+ 122:	00 00       	nop
+ 124:	08 95       	ret
+
+00000126 <ws2812_setleds>:
+#include <avr/io.h>
+#include <util/delay.h>
+ 
+void inline ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
+{
+   ws2812_setleds_pin(ledarray,leds, _BV(ws2812_pin));
+ 126:	42 e0       	ldi	r20, 0x02	; 2
+ 128:	ef cf       	rjmp	.-34     	; 0x108 <ws2812_setleds_pin>
+
+0000012a <ws2812_sendarray>:
+  _delay_us(50);
+}
+
+void ws2812_sendarray(uint8_t *data,uint16_t datlen)
+{
+  ws2812_sendarray_mask(data,datlen,_BV(ws2812_pin));
+ 12a:	42 e0       	ldi	r20, 0x02	; 2
+ 12c:	cc cf       	rjmp	.-104    	; 0xc6 <ws2812_sendarray_mask>
+
+0000012e <_exit>:
+ 12e:	f8 94       	cli
+
+00000130 <__stop_program>:
+ 130:	ff cf       	rjmp	.-2      	; 0x130 <__stop_program>

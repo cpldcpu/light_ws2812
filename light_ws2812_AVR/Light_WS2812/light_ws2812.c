@@ -11,7 +11,7 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <util/delay.h>
-
+ 
 void inline ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
 {
    ws2812_setleds_pin(ledarray,leds, _BV(ws2812_pin));
@@ -35,8 +35,8 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 */
 
 // Timing in ns
-#define w_lowpulse     350
-#define w_highpulse    900
+#define w_zeropulse   350
+#define w_onepulse    900
 #define w_totalperiod 1250
 
 // Fixed cycles used by the inner loop
@@ -45,14 +45,14 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 #define w_fixedtotal  8   
 
 // Insert NOPs to match the timing, if possible
-#define w_lowcycles    (((F_CPU/1000)*w_lowpulse          )/1000000)
-#define w_highcycles   (((F_CPU/1000)*w_highpulse  +500000)/1000000)
-#define w_totalcycles  (((F_CPU/1000)*w_totalperiod+500000)/1000000)
+#define w_zerocycles    (((F_CPU/1000)*w_zeropulse          )/1000000)
+#define w_onecycles     (((F_CPU/1000)*w_onepulse    +500000)/1000000)
+#define w_totalcycles   (((F_CPU/1000)*w_totalperiod +500000)/1000000)
 
 // w1 - nops between rising edge and falling edge - low
-#define w1 (w_lowcycles-w_fixedlow)
+#define w1 (w_zerocycles-w_fixedlow)
 // w2   nops between fe low and fe high
-#define w2 (w_highcycles-w_fixedhigh-w1)
+#define w2 (w_onecycles-w_fixedhigh-w1)
 // w3   nops to complete loop
 #define w3 (w_totalcycles-w_fixedtotal-w1-w2)
 
@@ -62,7 +62,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
   #define w1_nops  0
 #endif
 
-// calculate critical low timing
+// The "low
 #define w_lowtime ((w1_nops+w_fixedlow)*1000000)/(F_CPU/1000)
 #if w_lowtime>550
    #error "Light_ws2812: Sorry, the clock speed is too low. Did you set F_CPU correctly?"

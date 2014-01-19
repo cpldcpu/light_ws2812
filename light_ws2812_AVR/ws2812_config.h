@@ -3,7 +3,7 @@
  *
  * Created: 18.01.2014 09:58:15
  *
- * Use Configuration file for the light_ws2812_lib
+ * User Configuration file for the light_ws2812_lib
  *
  */ 
 
