@@ -36,15 +36,17 @@ Troubleshooting
 ================
 Please note that incorrect timing is rarely the source of problems. If you want to save some time, go through the items below before altering the library.
 
-Only a part of the string is lighting up / all the colours are wrong.
-* Please verify whether the correct array size was passed to the call. 
+None or only a part of the string is lighting up.
+* Did you pass the correct array size in the function call?
+* Is the pin configuration correct?
+* Is anything else connected to the output pin you are using? Some development boards have LEDs connected to various pins.
+* Did you choose the correct CPU frequency setting? Did you initialize the clock correctly?
 
 The LEDs are flickering and not showing the intended colour.
 * This is usually a problem with insufficient current sourcing capability.
 * Are you using a bypass capacitor for each LEDs as indicated in the datasheet? Not using a bypass capacitor will lead to erroneous behaviour. 
 * You may have to add an additional electrolytic capacitor at the input of your LED strip if you use long power supply lines.
 * Is your power supply able to supply the required current-level? If set to white at maximum brightness, each LED will draw 60mA. A single USB-Port is barely able to supply 10 LEDs.
-* Did you choose the correct CPU frequency setting? Did you initialize the clock correctly?
 
 Release History
 ================
