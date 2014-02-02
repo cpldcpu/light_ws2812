@@ -41,6 +41,3 @@ Tested Combinations ARM
 Please find updates on https://github.com/cpldcpu/light_ws2812
 
 bug reports etc: cpldcpu@gmail.com
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/ca077646771bb9d7a3fa1c399ece0e32 "githalytics.com")](http://githalytics.com/cpldcpu/light_ws2812)
-
