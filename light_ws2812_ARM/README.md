@@ -1,4 +1,4 @@
-light_ws2812_ARM
+light_ws2812_ARM - beta
 ============
 
 Light weight library to control WS2811/WS2812 based LEDS and LED Strings on ARM Cortex microcontrollers.
