@@ -5,6 +5,8 @@
 * Author: Tim (cpldcpu@gmail.com)
 *
 * Jan 18th, 2014  v2.0b Initial Version
+*
+* License: GNU GPL v2 (see License.txt)
 */
 
 #include "light_ws2812.h"
@@ -62,7 +64,8 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
   #define w1_nops  0
 #endif
 
-// The "low
+// The only critical timing parameter is the minimum pulse length of the "0"
+// Warn or throw error if this timing can not be met with current F_CPU settings.
 #define w_lowtime ((w1_nops+w_fixedlow)*1000000)/(F_CPU/1000)
 #if w_lowtime>550
    #error "Light_ws2812: Sorry, the clock speed is too low. Did you set F_CPU correctly?"

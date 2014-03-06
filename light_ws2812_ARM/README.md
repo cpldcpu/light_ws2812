@@ -1,4 +1,4 @@
-light_ws2812_ARM
+light_ws2812_ARM - beta
 ============
 
 Light weight library to control WS2811/WS2812 based LEDS and LED Strings on ARM Cortex microcontrollers.
@@ -41,6 +41,3 @@ Tested Combinations ARM
 Please find updates on https://github.com/cpldcpu/light_ws2812
 
 bug reports etc: cpldcpu@gmail.com
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/ca077646771bb9d7a3fa1c399ece0e32 "githalytics.com")](http://githalytics.com/cpldcpu/light_ws2812)
-
