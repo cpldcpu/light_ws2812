@@ -11,27 +11,7 @@
 * License: GNU GPL v2 (see License.txt)
 */
 
-#include "light_ws2812.h"
-#include <avr/interrupt.h>
-#include <avr/io.h>
-#include <util/delay.h>
- 
-void  ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
-{
-   ws2812_setleds_pin(ledarray,leds, _BV(ws2812_pin));
-}
-
-void  ws2812_setleds_pin(struct cRGB *ledarray, uint16_t leds, uint8_t pinmask)
-{
-  ws2812_DDRREG |= _BV(ws2812_pin); // Enable DDR
-  ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask,(uint8_t*)&(ws2812_PORTREG));
-  _delay_us(50);
-}
-
-void ws2812_sendarray(uint8_t *data,uint16_t datlen)
-{
-  ws2812_sendarray_mask(data,datlen,_BV(ws2812_pin),(uint8_t*)&(ws2812_PORTREG));
-}
+#include "WS2812.h"
 
 /*
   This routine writes an array of bytes with RGB values to the Dataout pin
@@ -94,13 +74,13 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 #define w_nop8  w_nop4 w_nop4
 #define w_nop16 w_nop8 w_nop8
 
-void  ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi,uint8_t *port)
+void  WS2812::ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi,uint8_t *port, uint8_t *portreg)
 {
   uint8_t curbyte,ctr,masklo;
   uint8_t sreg_prev;
   
-  masklo	=~maskhi&ws2812_PORTREG;
-  maskhi |=        ws2812_PORTREG;
+  masklo = ~maskhi & *portreg;
+  maskhi |= *portreg;
   sreg_prev=SREG;
   cli();  
 
