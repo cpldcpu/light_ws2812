@@ -72,7 +72,7 @@ Release History
 
 - v2.0b 2014/01/19
 	- Initial release of V2 lib with new interface and architecture.
-- v2.0b 2014/03/08
+- v2.1 2014/03/08
 	- Added Arduino and C++ support courtesy of Matthias Riegler (@xvzf) 		
 
 You can find the old V1 here: https://github.com/cpldcpu/light_ws2812/tree/v1.0
