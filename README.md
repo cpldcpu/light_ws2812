@@ -32,6 +32,15 @@ Usage
 
 Examples are provided in the [Examples](https://github.com/cpldcpu/light_ws2812/tree/master/light_ws2812_AVR/Examples) folder. You can build them with the supplied makefile.
 
+Arduino
+=======
+
+- Copy the folder light_ws2812_Arduino/light_ws2812 to $(Arduino_home)/librarys/
+- The $(Arduino_home) is, where you can find the arduino executable
+- to use the Library, just add it over sketch->import library
+- to see how you can use it, have a look at the example
+- Make sure, the Pin you use to address the LEDs really exist! if not, the sketch won't compile or doesn't run correctly on your Arduino!
+
 Troubleshooting 
 ================
 Please note that incorrect timing is rarely the source of problems. If you want to save some time, go through the items below before altering the library.
@@ -66,6 +75,17 @@ Tested Combinations AVR
 | ATmega 8 (Standard Core)|        |        |         |   X    |     |    |
 | ATtiny 10 (Reduced Core)| X      |  X     |         |       |     |    |
 | ATmega 168 (Standard Core)|        |        |         |       |     |  X  |
+| ATmega 32u4 (Standard Core)|        |        |         |   x    |     |  X  |
+
+
+Tested Combinations Arduini
+================
+
+| Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz | 20 Mhz |
+| -------------       |:-------:| :-----: | :------: | :----:| :---:| :---:|
+| Arduino Uno |       |       |         |       |  X   |    |
+| Arduino Mega 2560 |        |        |        |       |    x    |    |
+
 
 Tested Combinations ARM
 ================
