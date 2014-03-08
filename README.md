@@ -21,8 +21,8 @@ innerloops. Some advantages of this approach compared to other solutions are:
 
 The timing values used in the library were adjusted to work on all devices. Look [here](http://cpldcpu.wordpress.com/2014/01/14/light_ws2812-library-v2-0-part-i-understanding-the-ws2812/) and [here](http://cpldcpu.wordpress.com/2014/01/19/light_ws2812-library-v2-0/) for details.
 
-Usage
-=====
+Usage C - Interface
+===================
 
 - Add "light_ws2812.c", "light_ws2812.h" and "ws2812_config.h" to your project. 
 - Update "ws2812_config.h" according to your I/O pin.
@@ -32,8 +32,15 @@ Usage
 
 Examples are provided in the [Examples](https://github.com/cpldcpu/light_ws2812/tree/master/light_ws2812_AVR/Examples) folder. You can build them with the supplied makefile.
 
-Arduino
-=======
+
+Usage C++ - Interface
+=====================
+- add "light_ws2812.cpp", "WS2812.cpp" and "WS2812.h" to your project.
+- look in the header WS2812.h to determine how to use the class.
+- Ports and LED-Count are handled dynamically, so you can add as many LED-Strips as you got freee outpupt ports! 
+
+Usage Arduino
+=============
 
 - Copy the folder light_ws2812_Arduino/light_ws2812 to $(Arduino_home)/librarys/
 - The $(Arduino_home) is, where you can find the arduino executable
@@ -78,7 +85,7 @@ Tested Combinations AVR
 | ATmega 32u4 (Standard Core)|        |        |         |   x    |     |  X  |
 
 
-Tested Combinations Arduini
+Tested Combinations Arduino
 ================
 
 | Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz | 20 Mhz |
