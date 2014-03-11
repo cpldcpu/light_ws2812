@@ -84,10 +84,10 @@ Tested Combinations AVR
 | -------------       |:-------:| :-----: | :------: | :----:| :---:| :---:|
 | ATtiny 85 (Standard Core )| X      |  X     |         |       |  X   |    |
 | ATtiny 13 (Standard Core)|        |        |    X    |       |     |    |
-| ATmega 8 (Standard Core)|        |        |         |   X    |     |    |
+| ATmega 8 (Standard Core)|        |        |         |   X    |  X  |    |
 | ATtiny 10 (Reduced Core)| X      |  X     |         |       |     |    |
-| ATmega 168 (Standard Core)|        |        |         |       |     |  X  |
-| ATmega 32u4 (Standard Core)|        |        |         |   x    |     |  X  |
+| ATmega 168 (Standard Core)|        |        |         |       |  X  |  X  |
+| ATmega 32u4 (Standard Core)|        |        |         |   X    |     |  X  |
 
 
 Tested Combinations Arduino
@@ -96,7 +96,7 @@ Tested Combinations Arduino
 | Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz | 20 Mhz |
 | -------------       |:-------:| :-----: | :------: | :----:| :---:| :---:|
 | Arduino Uno |       |       |         |       |  X   |    |
-| Arduino Mega 2560 |        |        |        |       |    x    |    |
+| Arduino Mega 2560 |        |        |        |       |    X    |    |
 
 
 Tested Combinations ARM
