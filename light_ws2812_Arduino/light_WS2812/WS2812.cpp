@@ -15,7 +15,7 @@
 WS2812::WS2812(uint16_t num_leds) {
 	count_led = num_leds;
 	
-	pixels = (uint8_t*)malloc(count_led);
+	pixels = (uint8_t*)malloc(count_led*3);
 	
 }
 
