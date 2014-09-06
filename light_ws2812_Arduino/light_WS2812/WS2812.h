@@ -58,7 +58,7 @@ private:
 	uint8_t *pixels;
 	uint8_t offsetRed;
 	uint8_t offsetGreen;
-    uint8_t offsetBlue;
+	uint8_t offsetBlue;
     
 	void ws2812_sendarray_mask(uint8_t *array,uint16_t length, uint8_t pinmask,uint8_t *port, uint8_t *portreg);
 
