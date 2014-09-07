@@ -6,8 +6,8 @@
 *
 * Mar 07 2014: Added Arduino and C++ Library
 *
-* September 6, 2014      Added option to switch between most popular color orders
-*                          (RGB, GRB, and BRG) --  Windell H. Oskay
+* September 6, 2014:	Added option to switch between most popular color orders
+*						(RGB, GRB, and BRG) --  Windell H. Oskay
 * 
 * License: GNU GPL v2 (see License.txt)
 */
@@ -19,9 +19,9 @@ WS2812::WS2812(uint16_t num_leds) {
 	count_led = num_leds;
 	
 	pixels = (uint8_t*)malloc(count_led*3);
-    offsetGreen = 0;
-    offsetRed = 1;
-    offsetBlue = 2;
+	offsetGreen = 0;
+	offsetRed = 1;
+	offsetBlue = 2;
 }
 
 cRGB WS2812::get_crgb_at(uint16_t index) {
@@ -63,21 +63,21 @@ void WS2812::sync() {
 }
 
 void WS2812::setColorOrderGRB() { // Default color order
-    offsetGreen = 0;
-    offsetRed = 1;
-    offsetBlue = 2;
+	offsetGreen = 0;
+	offsetRed = 1;
+	offsetBlue = 2;
 }
 
 void WS2812::setColorOrderRGB() {
-    offsetRed = 0;
-    offsetGreen = 1;
-    offsetBlue = 2;
+	offsetRed = 0;
+	offsetGreen = 1;
+	offsetBlue = 2;
 }
 
 void WS2812::setColorOrderBRG() {
-    offsetBlue = 0;
-    offsetRed = 1;
-    offsetGreen = 2;
+	offsetBlue = 0;
+	offsetRed = 1;
+	offsetGreen = 2;
 }
 
 WS2812::~WS2812() {
