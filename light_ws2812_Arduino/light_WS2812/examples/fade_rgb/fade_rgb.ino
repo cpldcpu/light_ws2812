@@ -79,14 +79,3 @@ void loop() {
   LED.sync(); // Sends the data to the LEDs
   delay(10); // Wait (ms)
 }
-
-
-
-
-
-
-
-
-
-
-

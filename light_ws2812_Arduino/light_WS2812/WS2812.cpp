@@ -32,10 +32,10 @@ cRGB WS2812::get_crgb_at(uint16_t index) {
 		
 		uint16_t tmp;
 		tmp = index * 3;
-        
-        px_value.r = pixels[tmp+offsetRed];
-        px_value.g = pixels[tmp+offsetGreen];
-        px_value.b = pixels[tmp+offsetBlue];
+		
+		px_value.r = pixels[tmp+offsetRed];
+		px_value.g = pixels[tmp+offsetGreen];
+		px_value.b = pixels[tmp+offsetBlue];
 	}
 	
 	return px_value;
@@ -48,9 +48,9 @@ uint8_t WS2812::set_crgb_at(uint16_t index, cRGB px_value) {
 		uint16_t tmp;
 		tmp = index * 3;
 		
-        pixels[tmp+offsetGreen] = px_value.g;
-        pixels[tmp+offsetRed] = px_value.r;
-        pixels[tmp+offsetBlue] = px_value.b;
+		pixels[tmp+offsetGreen] = px_value.g;
+		pixels[tmp+offsetRed] = px_value.r;
+		pixels[tmp+offsetBlue] = px_value.b;
 		
 		return 0;
 	} 
