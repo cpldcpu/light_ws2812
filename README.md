@@ -38,7 +38,7 @@ Usage Arduino
 
 - If you have Arduino 1.0.5 or newer, simply import the zipfile from light\_ws2812\_arduino with sketch->import library.
 - Please refer to [these](http://arduino.cc/en/Guide/Libraries) instruction for older versions.
-- To see how you can use it, have a look at the example.
+- To see how you can use it, have a look at the examples.
 - Make sure the Pin you use to address the LEDs really exists! If not, the sketch won't compile or doesn't run correctly on your Arduino.
 
 

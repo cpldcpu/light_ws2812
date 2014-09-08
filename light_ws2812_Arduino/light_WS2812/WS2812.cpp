@@ -6,6 +6,9 @@
 *
 * Mar 07 2014: Added Arduino and C++ Library
 *
+* September 6, 2014:	Added option to switch between most popular color orders
+*						(RGB, GRB, and BRG) --  Windell H. Oskay
+* 
 * License: GNU GPL v2 (see License.txt)
 */
 
@@ -16,7 +19,9 @@ WS2812::WS2812(uint16_t num_leds) {
 	count_led = num_leds;
 	
 	pixels = (uint8_t*)malloc(count_led*3);
-	
+	offsetGreen = 0;
+	offsetRed = 1;
+	offsetBlue = 2;
 }
 
 cRGB WS2812::get_crgb_at(uint16_t index) {
@@ -28,9 +33,9 @@ cRGB WS2812::get_crgb_at(uint16_t index) {
 		uint16_t tmp;
 		tmp = index * 3;
 		
-		px_value.g = pixels[tmp];
-		px_value.r = pixels[tmp+1];
-		px_value.b = pixels[tmp+2];
+		px_value.r = pixels[tmp+offsetRed];
+		px_value.g = pixels[tmp+offsetGreen];
+		px_value.b = pixels[tmp+offsetBlue];
 	}
 	
 	return px_value;
@@ -43,9 +48,9 @@ uint8_t WS2812::set_crgb_at(uint16_t index, cRGB px_value) {
 		uint16_t tmp;
 		tmp = index * 3;
 		
-		pixels[tmp] = px_value.g;
-		pixels[tmp+1] = px_value.r;
-		pixels[tmp+2] = px_value.b;
+		pixels[tmp+offsetGreen] = px_value.g;
+		pixels[tmp+offsetRed] = px_value.r;
+		pixels[tmp+offsetBlue] = px_value.b;
 		
 		return 0;
 	} 
@@ -55,6 +60,24 @@ uint8_t WS2812::set_crgb_at(uint16_t index, cRGB px_value) {
 void WS2812::sync() {
 	*ws2812_port_reg |= pinMask; // Enable DDR
 	ws2812_sendarray_mask(pixels,3*count_led,pinMask,(uint8_t*) ws2812_port,(uint8_t*) ws2812_port_reg );	
+}
+
+void WS2812::setColorOrderGRB() { // Default color order
+	offsetGreen = 0;
+	offsetRed = 1;
+	offsetBlue = 2;
+}
+
+void WS2812::setColorOrderRGB() {
+	offsetRed = 0;
+	offsetGreen = 1;
+	offsetBlue = 2;
+}
+
+void WS2812::setColorOrderBRG() {
+	offsetBlue = 0;
+	offsetRed = 1;
+	offsetGreen = 2;
 }
 
 WS2812::~WS2812() {
