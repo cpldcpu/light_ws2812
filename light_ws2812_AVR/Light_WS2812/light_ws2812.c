@@ -21,7 +21,7 @@ void inline ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
 
 void inline ws2812_setleds_pin(struct cRGB *ledarray, uint16_t leds, uint8_t pinmask)
 {
-  ws2812_DDRREG |= _BV(ws2812_pin); // Enable DDR
+  ws2812_DDRREG |= pinmask; // Enable DDR
   ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
   _delay_us(50);
 }
