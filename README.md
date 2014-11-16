@@ -62,10 +62,11 @@ None or only a part of the string is lighting up.
 
 The LEDs are flickering and not showing the intended colour.
 
- * This is usually a problem with insufficient current sourcing capability.
+ * This is often a problem with insufficient current sourcing capability.
  * Are you using a bypass capacitor for each LEDs as indicated in the datasheet? Not using a bypass capacitor will lead to erroneous behaviour. 
  * You may have to add an additional electrolytic capacitor at the input of your LED strip if you use long power supply lines.
  * Is your power supply able to supply the required current-level? If set to white at maximum brightness, each LED will draw 60mA. A single USB-Port is barely able to supply 10 LEDs.
+ * The LEDs only display white: This can happen if the clock frequency of your MCU is lower than that given in F_CPU to the code.
 
 Release History
 ================
