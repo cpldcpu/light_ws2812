@@ -79,8 +79,8 @@ void  WS2812::ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi
   uint8_t curbyte,ctr,masklo;
   uint8_t sreg_prev;
   
-  masklo = ~maskhi & *portreg;
-  maskhi |= *portreg;
+  masklo = ~maskhi & *port;
+  maskhi |= *port;
   sreg_prev=SREG;
   cli();  
 
