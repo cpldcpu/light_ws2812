@@ -13,8 +13,8 @@ high-speed mode is supported. This library uses a bit-banging approach with cycl
 innerloops. Some advantages of this approach compared to other solutions are:
 
 - Compatible to all AVR MCUs since it does not rely on special periphery.
-- The code timing is automatically adjusted for the CPU clock speeds. 
-- A CPU clock speed of 8 MHz and up is recommended, while 4 MHz may work under some circumstances.
+- The code timing is automatically adjusted to the CPU clock at compile time.
+- A CPU clock speed of 8 MHz and up is recommended, but even 4 MHz may work under some circumstances.
 - Much smaller program code: Size optimized assembler without unrolled loops (<50 bytes in most cases)
 - Supports standard AVR, reduced core AVR (Attiny 4/5/9/10/20/40) and XMEGA (untested) without special case handling.
 - Experimental Cortex-M0 ARM support.
