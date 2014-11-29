@@ -3,10 +3,12 @@ light_ws2812_ARM - beta
 
 Light weight library to control WS2811/WS2812 based LEDS and LED Strings on ARM Cortex microcontrollers.
 This library uses a bitbanging approach with active CPU waiting. This approach allows good compatibility
-to all ARM based devices in additio to a low software and hardware footprint. It does, however, rely on cycle
+to all ARM based devices in addition to a low software and hardware footprint. It does, however, rely on cycle
 exact code execution timing. Therefore this library will fail if you have waitstates during code memory
 access. If you want to use a highly clocked cortex core with multiple memory waitstates, I would recommend
 to use a hardware based WS2812 controller approach. 
+
+*This is still experimental and has only been tested on Cortex-M0*
 
 [See the library in action on a LPC810](http://www.youtube.com/watch?v=Uwxt7SuSV7Y)
 
