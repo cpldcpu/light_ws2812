@@ -13,11 +13,11 @@ high-speed mode is supported. This library uses a bit-banging approach with cycl
 innerloops. Some advantages of this approach compared to other solutions are:
 
 - Compatible to all AVR MCUs since it does not rely on special periphery.
-- The code timing is automatically adjusted for CPU clock speeds from 4 Mhz up to the maximum on AVR.
+- The code timing is automatically adjusted for the CPU clock speeds. 
+- A CPU clock speed of 8 MHz and up is recommended, while 4 MHz may work under some circumstances.
 - Much smaller program code: Size optimized assembler without unrolled loops (<50 bytes in most cases)
 - Supports standard AVR, reduced core AVR (Attiny 4/5/9/10/20/40) and XMEGA (untested) without special case handling.
-- Arduino or C++ not required
-- New: Experimental Cortex-M0 ARM core.
+- Experimental Cortex-M0 ARM support.
 
 The timing values used in the library were adjusted to work on all devices. Look [here](http://cpldcpu.wordpress.com/2014/01/14/light_ws2812-library-v2-0-part-i-understanding-the-ws2812/) and [here](http://cpldcpu.wordpress.com/2014/01/19/light_ws2812-library-v2-0/) for details.
 
