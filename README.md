@@ -53,20 +53,20 @@ Troubleshooting
 ================
 Please note that incorrect timing is rarely the source of problems. If you want to save some time, go through the items below before altering the library.
 
-None or only a part of the string is lighting up.
+#### None or only a part of the string is lighting up ####
 
  * Did you pass the correct array size in the function call?
  * Is the pin configuration correct?
  * Is anything else connected to the output pin you are using? Some development boards have LEDs connected to various pins.
  * Did you choose the correct CPU frequency setting? Did you initialize the clock correctly?
 
-The LEDs are flickering and not showing the intended colour.
+#### The LEDs are flickering and are not showing the intended color ####
 
  * This is often a problem with insufficient current sourcing capability.
  * Are you using a bypass capacitor for each LEDs as indicated in the datasheet? Not using a bypass capacitor will lead to erroneous behaviour. 
  * You may have to add an additional electrolytic capacitor at the input of your LED strip if you use long power supply lines.
  * Is your power supply able to supply the required current-level? If set to white at maximum brightness, each LED will draw 60mA. A single USB-Port is barely able to supply 10 LEDs.
- * The LEDs only display white: This can happen if the clock frequency of your MCU is lower than that given in F_CPU to the code.
+ * The LEDs only display white: This can happen if the actual clock frequency of your MCU is lower than that given in F_CPU to the code.
 
 Release History
 ================
