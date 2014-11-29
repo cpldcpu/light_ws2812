@@ -8,7 +8,7 @@ exact code execution timing. Therefore this library will fail if you have waitst
 access. If you want to use a highly clocked cortex core with multiple memory waitstates, I would recommend
 to use a hardware based WS2812 controller approach. 
 
-*This is still experimental and has only been tested on Cortex-M0*
+**This is still experimental and has only been tested on Cortex-M0**
 
 [See the library in action on a LPC810](http://www.youtube.com/watch?v=Uwxt7SuSV7Y)
 
