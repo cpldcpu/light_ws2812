@@ -1,4 +1,4 @@
-light_ws2812 V2.1
+light_ws2812 V2.2
 ============
 
 Light weight library to control WS2811/WS2812/WS2812B based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers. The new version 2 of this library supports a simplified interface and arbitrary CPU clock. V2.1 finally adds Arduino support.
@@ -75,6 +75,9 @@ Release History
 	- Initial release of V2 lib with new interface and architecture.
 - v2.1 2014/03/08
 	- Added Arduino and C++ support courtesy of Matthias Riegler (@xvzf) 		
+- v2.2 2014/11/30
+	- Improved Ardunio version with variable color order, courtesy of Windell Oskay (@oskay)
+	- Fixed a bug where the other bits of the port were trashed in Arduino version.
 
 You can find the old V1 here: https://github.com/cpldcpu/light_ws2812/tree/v1.0
 
