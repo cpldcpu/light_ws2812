@@ -24,7 +24,7 @@ Usage C - Interface
 - Update "apa102\_config.h" according to your I/O pin.
 - Call "apa102\_setleds" with a pointer to the LED array and the number LEDs.
 
-Examples are provided in the [Examples](https://github.com/cpldcpu/light_apa102/tree/master/light_apa102_AVR/Examples) folder. You can build them with the supplied makefile.
+Examples are provided in the [Examples](https://github.com/cpldcpu/light_ws2812/tree/master/light_apa102_AVR/Examples) folder. You can build them with the supplied makefile.
 
 Release History
 ================
