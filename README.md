@@ -5,6 +5,8 @@ Light weight library to control WS2811/WS2812/WS2812B based LEDS and LED Strings
 
 [See the library in action on a LPC810](http://www.youtube.com/watch?v=Uwxt7SuSV7Y)
 
+**New:** [Experimental companion library for the APA102 LED](https://github.com/cpldcpu/light_ws2812/tree/master/light_apa102_AVR)
+
 Description
 ===========
 
