@@ -67,6 +67,8 @@ public:
 	
 	cRGB get_crgb_at(uint16_t index);
 	uint8_t set_crgb_at(uint16_t index, cRGB px_value);
+	uint8_t set_subpixel_at(uint16_t index, uint8_t offset, uint8_t px_value);
+
 	void sync();
 	
 #ifdef RGB_ORDER_ON_RUNTIME	
