@@ -60,10 +60,12 @@ WS2812 LED6(LEDCount); // 10 11
 
 int longPress = 0;
 
-#define BRIGHTNESS 64
-byte Brightness(byte x)
-{
-  return map(x, 0, 255, 0, BRIGHTNESS);
+//keep this between 1 and 255
+#define BRIGHTNESS 16
+
+long Brightness(byte x)
+{  
+  return (long)x * (long)BRIGHTNESS / 255L; 
 }
 
 class TimePie
@@ -152,7 +154,7 @@ void ResetLEDS()
 {
   //WS2812 library needs initialization otherwise all the leds will sync to uninitialized data
   cRGB cBlack = {
-    0, 0, 0   };
+    0, 0, 0     };
 
   LED1.set_crgb_at(0, (cRGB) {
     BRIGHTNESS, BRIGHTNESS, BRIGHTNESS
