@@ -46,7 +46,7 @@
 #ifdef RGB_ORDER_ON_RUNTIME	
 	#define OFFSET_R(r) r+offsetRed
 	#define OFFSET_G(g) g+offsetGreen
-	#define OFFSET_b(b) b+offsetBlue
+	#define OFFSET_B(b) b+offsetBlue
 #else
 // CHANGE YOUR STATIC RGB ORDER HERE
 	#define OFFSET_R(r) r+1
