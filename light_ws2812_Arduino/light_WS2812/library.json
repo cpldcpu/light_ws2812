@@ -1,0 +1,13 @@
+{
+  "name": "LightWS2812",
+  "keywords": "led, driver",
+  "description": "Light weight library to control WS2811/WS2812/WS2812B based LEDS and LED Strings",
+  "include": "light_ws2812_Arduino/light_WS2812",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/cpldcpu/light_ws2812"
+  },
+  "frameworks": "arduino",
+  "platforms": "atmelavr"
+}
