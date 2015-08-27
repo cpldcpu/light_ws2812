@@ -1,10 +1,6 @@
 /*
-* Light_WS2812 library example - RGB_blinky
+* Light_WS2812 library example - Rainbowfade
 *
-* cycles one LED through red, green, blue
-*
-* This example is configured for a ATtiny85 with PLL clock fuse set and
-* the WS2812 string connected to PB4.
 */
 
 #include <util/delay.h>
@@ -12,8 +8,8 @@
 #include <avr/interrupt.h>
 #include "light_ws2812.h"
 
-struct cRGB led[1];
-
+struct cRGB led[30];
+struct cRGB colors[30];
 int main(void)
 {
 
@@ -25,75 +21,68 @@ int main(void)
   CLKPR=0;			// set clock prescaler to 1 (attiny 25/45/85/24/44/84/13/13A)
   #endif
 
-    uint8_t i;
+    uint8_t j=1;
+    uint8_t k=1;
     uint8_t maxpix=30;
-    uint8_t dirRed=1;
-   // uint8_t dirGreen=1;
-    uint8_t dirBlue=0;
-    uint8_t stepBlueDown = 15;
-    uint8_t stepBlueUp = 4;
+    //uint8_t stepwidth = 5;
+
+
     
+    uint8_t i=0;
     for(i=maxpix; i>0; i--)
     {    
-        led[i].r=0;led[i].g=00;led[i].b=0;
-
+        led[i].r=0;led[i].g=0;led[i].b=0;
     }
-led[1].r=100;led[0].g=00;led[0].b=100;
+
+    //Rainbowcolors
+    colors[0].r=000; colors[0].g=000; colors[0].b=000;
+    colors[1].r=255; colors[1].g=000; colors[1].b=000;//red
+    colors[2].r=255; colors[2].g=100; colors[2].b=000;//orange
+    colors[3].r=100; colors[3].g=255; colors[3].b=000;//yellow
+    colors[4].r=000; colors[4].g=255; colors[4].b=000;//green
+    colors[5].r=000; colors[5].g=100; colors[5].b=255;//light blue (türkis)
+    colors[6].r=000; colors[6].g=000; colors[6].b=255;//blue
+    colors[7].r=100; colors[7].g=000; colors[7].b=255;//violet
 
   while(1)
   {
-  
-
-
-  
+    uint8_t i=0;
+    
     for(i=maxpix-1; i>0; i--)
     {    
         led[i+1]=led[i];
         ws2812_setleds(led,(i+1));
 
     }
-    i=0;
-    
-   
-    
-    if(dirRed==1 && led[1].r<255)       
-        led[1].r++;                 
-    else if(dirRed==1 && led[1].r==255) 
-        dirRed=0;
-  
-    if(dirRed==0 && led[1].r>0)       
-        led[1].r--;                 
-    else if(dirRed==0 && led[1].r==0) 
-        dirRed=1;  
-    
-    
-    
-    if(dirBlue==1 && led[1].b<255-stepBlueUp)       
-        led[1].b+=stepBlueUp;                 
-  
-    if(dirBlue==0 && led[1].b>stepBlueDown)    
-        led[1].b-=stepBlueDown;                 
- 
-              
-    if(led[1].b>=(255-stepBlueUp))
+    if(k>100)
     {
-      dirBlue=0; 
-      if(led[1].b>255)
-            led[1].b=255; 
-     }
+        j++;
+        k=0;
+    }
+    k++;
+    if(j>7)
+        j=0;
+    
+    
+    if(led[1].r<colors[j].r)
+        led[1].r++;
         
-    if(led[1].b<=stepBlueDown)
-    {
-      dirBlue=1; 
-      if(led[1].b<0)
-            led[1].b=0;
-     }   
+    if(led[1].r>colors[j].r)
+        led[1].r--;
+    
+    if(led[1].g<colors[j].g)
+        led[1].g++;
+        
+    if(led[1].g>colors[j].g)
+        led[1].g--;
 
+    if(led[1].b<colors[j].b)
+        led[1].b++;
         
-        
-    _delay_ms(300);
+    if(led[1].b>colors[j].b)
+        led[1].b--;
      
-
+    _delay_ms(100);
 
 
   }
