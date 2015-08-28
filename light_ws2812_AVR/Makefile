@@ -4,13 +4,13 @@
 # Change these parameters for your device
 
 F_CPU = 16000000
-DEVICE = attiny85
+DEVICE = atmega32
 
 # Tools:
 CC = avr-gcc
 
 LIB       = light_ws2812
-EXAMPLES  = RGB_blinky Chained_writes Rainbow
+EXAMPLES  = Chained_writes Rainbow 
 DEP		  = ws2812_config.h Light_WS2812/light_ws2812.h
 
 CFLAGS = -g2 -I. -ILight_WS2812 -mmcu=$(DEVICE) -DF_CPU=$(F_CPU) 
