@@ -19,9 +19,15 @@
 
 /*
  *  Structure of the LED array
+ *
+ * cRGB:     RGB  for WS2812S/B/C/D, SK6812, SK6812Mini, SK6812WWA, APA104, APA106
+ * cRGBW:    RGBW for SK6812RGBW
  */
 
-struct cRGB { uint8_t g; uint8_t r; uint8_t b; };
+struct cRGB  { uint8_t g; uint8_t r; uint8_t b; };
+struct cRGBW { uint8_t g; uint8_t r; uint8_t b; uint8_t w;};
+
+
 
 /* User Interface
  * 
@@ -36,8 +42,9 @@ struct cRGB { uint8_t g; uint8_t r; uint8_t b; };
  *         - Wait 50µs to reset the LEDs
  */
 
-void ws2812_setleds    (struct cRGB *ledarray, uint16_t number_of_leds);
-void ws2812_setleds_pin(struct cRGB *ledarray, uint16_t number_of_leds,uint8_t pinmask);
+void ws2812_setleds     (struct cRGB  *ledarray, uint16_t number_of_leds);
+void ws2812_setleds_pin (struct cRGB  *ledarray, uint16_t number_of_leds,uint8_t pinmask);
+void ws2812_setleds_rgbw(struct cRGBW *ledarray, uint16_t number_of_leds);
 
 /* 
  * Old interface / Internal functions

@@ -14,6 +14,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
  
+// Setleds for standard RGB 
 void inline ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
 {
    ws2812_setleds_pin(ledarray,leds, _BV(ws2812_pin));
@@ -24,6 +25,14 @@ void inline ws2812_setleds_pin(struct cRGB *ledarray, uint16_t leds, uint8_t pin
   ws2812_DDRREG |= pinmask; // Enable DDR
   ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
   _delay_us(50);
+}
+
+// Setleds for SK6812RGBW
+void inline ws2812_setleds_rgbw(struct cRGBW *ledarray, uint16_t leds)
+{
+  ws2812_DDRREG |= _BV(ws2812_pin); // Enable DDR
+  ws2812_sendarray_mask((uint8_t*)ledarray,leds<<2,_BV(ws2812_pin));
+  _delay_us(80);
 }
 
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
