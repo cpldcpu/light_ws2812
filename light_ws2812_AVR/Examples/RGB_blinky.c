@@ -16,15 +16,10 @@ struct cRGB led[1];
 
 int main(void)
 {
-
   #ifdef __AVR_ATtiny10__
   CCP=0xD8;		// configuration change protection, write signature
   CLKPSR=0;		// set cpu clock prescaler =1 (8Mhz) (attiny 4/5/9/10)
-  #else
-  CLKPR=_BV(CLKPCE);
-  CLKPR=0;			// set clock prescaler to 1 (attiny 25/45/85/24/44/84/13/13A)
   #endif
-
 
   while(1)
   {

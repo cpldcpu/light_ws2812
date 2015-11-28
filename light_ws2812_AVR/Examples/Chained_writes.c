@@ -8,8 +8,8 @@
  * multiple times. This technique can be useful to conserve memory
  * or to calculate LED colors on-the-fly.
  *
- * This example is configured for a ATtiny85 with PLL clock fuse set and 
- * the WS2812 string connected to PB4. 
+ * Please make sure to set your configuration in "WS2812_config.h" first
+ *
  */ 
 
 #include <util/delay.h>
@@ -29,14 +29,8 @@ int main(void)
 	#ifdef __AVR_ATtiny10__
 		CCP=0xD8;		// configuration change protection, write signature
 		CLKPSR=0;		// set cpu clock prescaler =1 (8Mhz) (attiny 4/5/9/10)
-
-	#else
-		CLKPR=_BV(CLKPCE);
-		CLKPR=0;			// set clock prescaler to 1 (attiny 25/45/85/24/44/84/13/13A)		
-
 	#endif
-		DDRB|=_BV(ws2812_pin);
-
+  	
 	led[0].r=16;led[0].g=00;led[0].b=00;		// LED 0 is red
 	led[1].r=16;led[1].g=16;led[1].b=16;		// LED 1 is White
 	
@@ -50,7 +44,6 @@ int main(void)
 		for (i=0; i<(16-pos); i++) 
 			ws2812_sendarray((uint8_t *)&led[1],3);			// white
 			
-		
 		_delay_ms(50);										// Issue reset and wait for 50 ms.
 		
 		pos+=direction;		
