@@ -5,12 +5,11 @@ Light weight library to control WS2812 based LEDS and LED Strings on 8-Bit AVR a
 
 [See the library in action on a LPC810](http://www.youtube.com/watch?v=Uwxt7SuSV7Y)
 
-**New:** 
+**New** 
 - [companion library for the APA102 LED](https://github.com/cpldcpu/light_ws2812/tree/master/light_apa102_AVR)
 - Added support for SK6812RGBW LED strings. See examples.
  
 **Supported Devices**
-
 - WS2811 800kHz mode, WS2812S, WS2812B, WS2812C
 - SK6812, SK6812RGBW
 - PD9853
@@ -91,7 +90,7 @@ Release History
 - v2.2 2014/11/30
 	- Improved Ardunio version with variable color order, courtesy of Windell Oskay (@oskay)
 	- Fixed a bug where the other bits of the port were trashed in Arduino version.
-- v2.3 2015/12/29
+- v2.3 2015/11/29
 	- Added support for SK6812RGBW LEDs. Please see example folder for usage.
     
 You can find the old V1 here: https://github.com/cpldcpu/light_ws2812/tree/v1.0
