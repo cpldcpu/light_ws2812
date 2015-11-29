@@ -9,7 +9,7 @@ Light weight library to control WS2812 based LEDS and LED Strings on 8-Bit AVR a
 - [companion library for the APA102 LED](https://github.com/cpldcpu/light_ws2812/tree/master/light_apa102_AVR)
 - Added support for SK6812RGBW LED strings. See examples.
  
-** Supported Devices **
+**Supported Devices**
 
 - WS2811 800kHz mode, WS2812S, WS2812B, WS2812C
 - SK6812, SK6812RGBW
