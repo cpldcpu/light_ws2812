@@ -34,7 +34,7 @@ void setup() {
 }
 
 void loop() {
-	byte i = 0;
+	int i = 0;
 	if (sign) {
 		intensity++;
 		if (intensity == 255) 
