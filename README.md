@@ -52,7 +52,7 @@ Usage Arduino
 - Please refer to [these](http://arduino.cc/en/Guide/Libraries) instruction for older versions.
 - To see how you can use it, have a look at the examples.
 - Make sure the Pin you use to address the LEDs really exists! If not, the sketch won't compile or doesn't run correctly on your Arduino.
-
+- In case of ATtiny85/45/25, library works with [ATtiny "Classic" Core](https://github.com/SpenceKonde/ATTinyCore). Tested with Arduino IDE 1.6.7 and ATtiny Classic 1.0.6 and 8MHz internal oscillator, B.O.D disabled. 
 
 Usage C++ - Interface
 =====================
