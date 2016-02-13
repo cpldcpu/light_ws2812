@@ -105,10 +105,10 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
   uint8_t curbyte,ctr,masklo;
   uint8_t sreg_prev;
   
+  ws2812_DDRREG |= maskhi; // Enable output
+  
   masklo	=~maskhi&ws2812_PORTREG;
   maskhi |=        ws2812_PORTREG;
-  
-  ws2812_DDRREG |= maskhi; // Enable output
   
   sreg_prev=SREG;
   cli();  
