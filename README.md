@@ -115,6 +115,7 @@ Tested Combinations Arduino
 | -------------       |:-------:| :-----: | :------: | :----:| :---:| :---:|
 | Arduino Uno |       |       |         |       |  X   |    |
 | Arduino Mega 2560 |        |        |        |       |    X    |    |
+| Arduino Nano |        |        |        |       |    X    |    |
 
 
 Tested Combinations ARM
