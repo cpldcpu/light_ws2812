@@ -1,4 +1,4 @@
-light_ws2812 V2.3
+light_ws2812 V2.4
 ============
 
 Light weight library to control WS2812 based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers. The new version 2 of this library supports a simplified interface and arbitrary CPU clock. V2.1 finally adds Arduino support.
@@ -11,6 +11,7 @@ Light weight library to control WS2812 based LEDS and LED Strings on 8-Bit AVR a
  
 **Supported Devices**
 - WS2811 800kHz mode, WS2812S, WS2812B, WS2812C
+- WS2813: Connect BIN of the first LED to ground. 
 - SK6812, SK6812RGBW
 - PD9853
 - APA106, APA104
@@ -92,6 +93,8 @@ Release History
 	- Fixed a bug where the other bits of the port were trashed in Arduino version.
 - v2.3 2015/11/29
 	- Added support for SK6812RGBW LEDs. Please see example folder for usage.
+- v2.4 2016/11/27
+	- Increased waittime to support WS2813 LEDs
     
 You can find the old V1 here: https://github.com/cpldcpu/light_ws2812/tree/v1.0
 
