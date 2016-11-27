@@ -1,11 +1,9 @@
-light_apa102 initial release
+light_apa102 v1.1
 ============
 
-Light weight library to control APA102 based LEDS and LED Strings on 8-Bit AVR microcontrollers. This is a companion library to the light_weight_ws2812 library and uses an identical interface. 
+Light weight library to control APA102 and SK9822 based LEDS and LED Strings on 8-Bit AVR microcontrollers. This is a companion library to the light_weight_ws2812 library and uses an identical interface. 
 
 To convert your code from the light\_ws2812 lib to the light\_apa102 lib simply do a search and replace of "ws2812" with "apa102".  
-
-**!!Experimental initial release!!**
 
 Description
 ===========
@@ -29,7 +27,11 @@ Examples are provided in the [Examples](https://github.com/cpldcpu/light_ws2812/
 Release History
 ================
 
-- initital 2014/11/30
+- v1.0b 2014/11/30 
+	- Initial release
+- v1.1 2016/11/27 
+	- Added reset frame to fix SK9822 update issue. Changed reset frame to 0x000000.
+	- Added **apa102_setleds_brightness** function which allows to set global brightness as well.
 
 Tested Combinations AVR
 ================
