@@ -21,13 +21,15 @@
  * Input:
  *         ledarray:           An array of RGB  data describing the LED colors
  *         number_of_leds:     The number of LEDs to write
+ *		   brightness:		   Set global brightness value (0-31)
  *
  * The functions will perform the following actions:
  *         - Set the data-out pin as output
  *         - Send out the LED data 
  */
 
-void apa102_setleds    (struct cRGB *ledarray, uint16_t number_of_leds);
+void apa102_setleds   	  		  (struct cRGB *ledarray, uint16_t number_of_leds);
+void apa102_setleds_brightness    (struct cRGB *ledarray, uint16_t number_of_leds,uint8_t brightness);
 
 /*
  * Internal defines

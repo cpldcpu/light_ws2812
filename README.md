@@ -6,7 +6,7 @@ Light weight library to control WS2812 based LEDS and LED Strings on 8-Bit AVR a
 [See the library in action on a LPC810](http://www.youtube.com/watch?v=Uwxt7SuSV7Y)
 
 **New** 
-- [companion library for the APA102 LED](https://github.com/cpldcpu/light_ws2812/tree/master/light_apa102_AVR)
+- [companion library for APA102 and SK9822 LEDs](https://github.com/cpldcpu/light_ws2812/tree/master/light_apa102_AVR)
 - Added support for SK6812RGBW LED strings. See examples.
  
 **Supported Devices**
@@ -15,7 +15,7 @@ Light weight library to control WS2812 based LEDS and LED Strings on 8-Bit AVR a
 - PD9853
 - APA106, APA104
 - Other WS2812 clones: Untested
-- APA102, APA102C: Use dedicated library
+- APA102, APA102C, SK9822: Use dedicated library
  
 Description
 ===========

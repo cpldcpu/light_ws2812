@@ -51,29 +51,40 @@ void SPI_write(uint8_t c) {
   }
 // State after call: SCK Low, Dat high
 }
- 
+
 void inline apa102_setleds(struct cRGB *ledarray, uint16_t leds)
+{
+  apa102_setleds_brightness(ledarray,leds,31);
+}
+ 
+void inline apa102_setleds_brightness(struct cRGB *ledarray, uint16_t leds,uint8_t brightness)
 {
   uint16_t i;
   uint8_t *rawarray=(uint8_t*)ledarray;
   SPI_init();
   
-  SPI_write(0x00);  // Start Frame
+  SPI_write(0x00);  // Start Frame 
   SPI_write(0x00);
   SPI_write(0x00);
   SPI_write(0x00);
  
   for (i=0; i<(leds+leds+leds); i+=3)
   {
-    SPI_write(0xff);  // Maximum global brightness
+    SPI_write(0xe0+brightness);  // Maximum global brightness
     SPI_write(rawarray[i+0]);
     SPI_write(rawarray[i+1]);
     SPI_write(rawarray[i+2]);
   }
+
+  // Reset frame - Only needed for SK9822, has no effect on APA102
+  SPI_write(0x00);  
+  SPI_write(0x00);
+  SPI_write(0x00);
+  SPI_write(0x00);
   
   // End frame: 8+8*(leds >> 4) clock cycles    
   for (i=0; i<leds; i+=16)
   {
-    SPI_write(0xff);  // 8 more clock cycles
+    SPI_write(0x00);  // 8 more clock cycles
   }
 }
