@@ -95,7 +95,7 @@ void WS2812::setColorOrderBRG() {
 #endif
 
 WS2812::~WS2812() {
-	
+	free(pixels);
 	
 }
 
