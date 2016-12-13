@@ -15,6 +15,8 @@ This is a small Ansi-C library to control APA102 based RGB LEDs and strings. Thi
 
 Please see the following article for more background on controlling the APA102: [Understanding the APA102](https://cpldcpu.wordpress.com/2014/11/30/understanding-the-apa102-superled/)
 
+See here for a write-up on the changes to improve compatibility to the SK9822: [SK9822](https://cpldcpu.com/2016/12/13/sk9822-a-clone-of-the-apa102/)
+
 Usage C - Interface
 ===================
 
