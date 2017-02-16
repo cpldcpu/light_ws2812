@@ -7,7 +7,7 @@
 * Jan 18th, 2014  v2.0b Initial Version
 * Nov 29th, 2015  v2.3  Added SK6812RGBW support
 *
-* License: GNU GPL v2 (see License.txt)
+* License: GNU GPL v2+ (see License.txt)
 */
 
 #include "light_ws2812.h"
