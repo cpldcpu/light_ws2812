@@ -6,7 +6,7 @@
  *
  * Please do not change this file! All configuration is handled in "ws2812_config.h"
  *
- * License: GNU GPL v2 (see License.txt)
+ * License: GNU GPL v2+ (see License.txt)
  +
  */ 
 
@@ -39,7 +39,7 @@ struct cRGBW { uint8_t g; uint8_t r; uint8_t b; uint8_t w;};
  * The functions will perform the following actions:
  *         - Set the data-out pin as output
  *         - Send out the LED data 
- *         - Wait 50µs to reset the LEDs
+ *         - Wait 50Âµs to reset the LEDs
  */
 
 void ws2812_setleds     (struct cRGB  *ledarray, uint16_t number_of_leds);
