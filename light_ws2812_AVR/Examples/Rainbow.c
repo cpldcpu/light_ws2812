@@ -9,8 +9,8 @@
 #include "light_ws2812.h"
 
 #define MAXPIX 30
-#define COLORLENGTH MAXPIX/2
-#define FADE 256/COLORLENGTH
+#define COLORLENGTH (MAXPIX/2)
+#define FADE (256/COLORLENGTH)
 
 struct cRGB colors[8];
 struct cRGB led[MAXPIX];
