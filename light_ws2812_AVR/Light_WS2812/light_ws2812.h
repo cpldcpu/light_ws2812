@@ -46,6 +46,13 @@ void ws2812_setleds     (struct cRGB  *ledarray, uint16_t number_of_leds);
 void ws2812_setleds_pin (struct cRGB  *ledarray, uint16_t number_of_leds,uint8_t pinmask);
 void ws2812_setleds_rgbw(struct cRGBW *ledarray, uint16_t number_of_leds);
 
+/*
+ * These functions can be used to set many LEDs to the same colour without
+ * needing a whole LED array in RAM
+ */
+void ws2812_setleds_constant(struct cRGB *ledval, uint16_t leds);
+void ws2812_setleds_constant_rgbw(struct cRGBW *ledval, uint16_t leds);
+
 /* 
  * Old interface / Internal functions
  *
