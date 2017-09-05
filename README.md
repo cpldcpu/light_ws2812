@@ -116,7 +116,7 @@ Tested Combinations Arduino
 
 | Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz | 20 Mhz |
 | -------------       |:-------:| :-----: | :------: | :----:| :---:| :---:|
-| Arduino Uno |       |       |         |       |  X   |    |
+| Arduino Uno |       |   X   |         |       |  X   |    |
 | Arduino Mega 2560 |        |        |        |       |    X    |    |
 | Arduino Nano |        |        |        |       |    X    |    |
 
