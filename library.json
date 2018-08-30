@@ -1,0 +1,34 @@
+{
+    "name": "light_ws2812",
+    "description": "Light weight library to control WS2811/WS2812 based LEDS and LED Strings for 8-Bit AVR microcontrollers",
+    "keywords": "neopixel,ws2811,ws2812,apa102,attiny,avr",
+    "authors": {
+        "name": "cpldcpu",
+        "email": "cpldcpu@gmail.com",
+        "url": "https://github.com/cpldcpu",
+        "maintainer": true
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cpldcpu/light_ws2812.git"
+    },
+    "license": "GPL-3.0-only",
+    "export": {
+        "exclude": [ "Datasheets" ]
+    },
+    "frameworks": [
+        "arduino"
+    ],
+    "platforms": [
+        "atmelavr"
+    ],
+    "build": {
+        "extraScript": "prebuild.py"
+    },
+    "dependencies": [
+    ],
+    "examples": [
+        "examples/*/src/*.ino",
+        "examples/*/src/*.c"
+    ]
+}
