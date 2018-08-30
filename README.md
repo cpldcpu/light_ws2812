@@ -38,7 +38,9 @@ Usage C - Interface
 ===================
 
 - Add "light_ws2812.c", "light_ws2812.h" and "ws2812_config.h" to your project. 
-- Update "ws2812_config.h" according to your I/O pin.
+- Optionally update `ws2812_config.h` according to your I/O pin, and include it before
+  including `light_ws2812.h`. Otherwise, the defaults in `light_ws2812.h` will
+  be used.
 - Make sure F\_CPU is correctly defined in your makefile or the project. (For AtmelStudio: Project->Properties->Toolchain->AVR/GNU C Compiler->Symbols. Add symbol F_CPU=xxxxx)
 - Call "ws2812\_setleds" with a pointer to the LED array and the number LEDs.
 - Alternatively you can use "ws2812\_setleds\_pin" to control up to 8 LED strips on the same Port.
