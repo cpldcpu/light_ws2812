@@ -1,0 +1,13 @@
+language: python
+python:
+  - "2.7"
+sudo: false
+cache:
+  directories:
+    - "~/.platformio"
+install:
+  - pip install -U platformio
+  - pio update
+
+script:
+  - for i in `echo examples/*`; do (cd "${i}" && pio run); done

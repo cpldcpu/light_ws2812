@@ -15,7 +15,30 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "ws2812_config.h"
+
+///////////////////////////////////////////////////////////////////////
+// Define Reset time in µs.
+//
+// This is the time the library spends waiting after writing the data.
+//
+// WS2813 needs 300 µs reset time
+// WS2812 and clones only need 50 µs
+//
+///////////////////////////////////////////////////////////////////////
+#if !defined(ws2812_resettime)
+#define ws2812_resettime    300
+#endif
+
+///////////////////////////////////////////////////////////////////////
+// Define I/O pin
+///////////////////////////////////////////////////////////////////////
+#if !defined(ws2812_port)
+#define ws2812_port B   // Data port
+#endif
+
+#if !defined(ws2812_pin)
+#define ws2812_pin  2   // Data out pin
+#endif
 
 /*
  *  Structure of the LED array

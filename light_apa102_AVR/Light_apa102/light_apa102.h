@@ -14,7 +14,33 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "apa102_config.h"
+
+///////////////////////////////////////////////////////////////////////
+// Define I/O pins
+// Clk and Data have to be connected to the same port
+///////////////////////////////////////////////////////////////////////
+
+#if !defined(apa102_port)
+#define apa102_port B     // Data and clk port
+#endif
+#if !defined(apa102_data)
+#define apa102_data 0    // Data out pin
+#endif
+#if !defined(apa102_clk)
+#define apa102_clk  2    // Clk out pin
+#endif
+
+///////////////////////////////////////////////////////////////////////
+// Define color byte order
+//
+// Define APA102_BYTE_ORDER_GBR if byte order is not standard BGR.
+///////////////////////////////////////////////////////////////////////
+
+#if defined(APA102_BYTE_ORDER_GBR)
+struct cRGB { uint8_t g; uint8_t b; uint8_t r; };   // GBR
+#else
+struct cRGB { uint8_t b; uint8_t g; uint8_t r; };   // BGR (APA102 Standard)
+#endif
 
 /* User Interface
  * 

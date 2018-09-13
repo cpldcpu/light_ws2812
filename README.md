@@ -38,7 +38,9 @@ Usage C - Interface
 ===================
 
 - Add "light_ws2812.c", "light_ws2812.h" and "ws2812_config.h" to your project. 
-- Update "ws2812_config.h" according to your I/O pin.
+- Optionally update `ws2812_config.h` according to your I/O pin, and include it before
+  including `light_ws2812.h`. Otherwise, the defaults in `light_ws2812.h` will
+  be used.
 - Make sure F\_CPU is correctly defined in your makefile or the project. (For AtmelStudio: Project->Properties->Toolchain->AVR/GNU C Compiler->Symbols. Add symbol F_CPU=xxxxx)
 - Call "ws2812\_setleds" with a pointer to the LED array and the number LEDs.
 - Alternatively you can use "ws2812\_setleds\_pin" to control up to 8 LED strips on the same Port.
@@ -61,6 +63,30 @@ Usage C++ - Interface
 - Refer to the header WS2812.h to determine how to use the class.
 - Ports and LED-Count are handled dynamically, so you can add as many LED-Strips as you got free outpupt ports! 
 
+Usage `platformio`
+==================
+
+For `arduino` and pure C implementations, the library supports `platformio`.
+By default, `light_ws2812_Arduino` will be used. If `arduino` is not used,
+i.e. the code is written pure C without `arduino`, define one of `build_flags`
+in `platformio.ini`.
+
+| Flag               | Library            |
+|--------------------|--------------------|
+| `LIGHT_WS2812_AVR` | `light_ws2812_AVR` |
+| `LIGHT_APA102_AVR` | `light_apa102_AVR` |
+
+Here is an example `platformio.ini` for `attiny85` without `arduino`.
+
+```ini
+[env:attiny85]
+board = attiny85
+platform = atmelavr
+lib_deps = https://github.com/cpldcpu/light_ws2812.git
+build_flags = -DLIGHT_WS2812_AVR
+```
+
+All examples under [examples](examples) directory are built by `platformio`.
 
 Troubleshooting 
 ================
