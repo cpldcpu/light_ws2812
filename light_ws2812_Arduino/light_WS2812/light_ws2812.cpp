@@ -82,10 +82,11 @@ void  WS2812::ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi
   masklo = ~maskhi & *port;
   maskhi |= *port;
   sreg_prev=SREG;
-  cli();  
 
   while (datlen--) {
+    SREG=sreg_prev;
     curbyte=*data++;
+    cli();
     
     asm volatile(
     "       ldi   %0,8  \n\t"

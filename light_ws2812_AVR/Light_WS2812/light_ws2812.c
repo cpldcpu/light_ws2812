@@ -111,10 +111,11 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
   maskhi |=        ws2812_PORTREG;
   
   sreg_prev=SREG;
-  cli();  
 
   while (datlen--) {
+    SREG=sreg_prev;
     curbyte=*data++;
+    cli();
     
     asm volatile(
     "       ldi   %0,8  \n\t"
