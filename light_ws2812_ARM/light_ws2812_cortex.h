@@ -55,7 +55,7 @@
   #define ws2812_mask_clr  GPIO_PIN_9   // Bitmask to clear the data out pin
 #endif
 ///////////////////////////////////////////////////////////////////////
-// User defined area: Define CPU clock speed
+// CPU clock speed
 //
 // The current implementation of the sendarray routine uses cycle accurate
 // active waiting. The routine is automatically adjusted according to
@@ -67,20 +67,17 @@
 // the value below until you get acceptable timing. It is highly recommended
 // to use this library only on devices without flash waitstates and
 // predictable code execution timing.
-//
 ///////////////////////////////////////////////////////////////////////
 
-#define ws2812_cpuclk 30000000
+#ifndef F_CPU
+	#error "Error: F_CPU (CPU clock speed) is not defined"
+#endif
 
-///////////////////////////////////////////////////////////////////////
-// End user defined area
-///////////////////////////////////////////////////////////////////////
-
-#if (ws2812_cpuclk<8000000)
+#if (F_CPU<8000000)
 	#error "Minimum clockspeed for ARM ws2812 library is 8 Mhz!"
 #endif
 
-#if (ws2812_cpuclk>60000000)
+#if (F_CPU>60000000)
 	#error "Maximum clockspeed for ARM ws2812 library is 60 Mhz!"
 #endif
 

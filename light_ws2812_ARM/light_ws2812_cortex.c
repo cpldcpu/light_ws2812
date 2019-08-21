@@ -13,9 +13,9 @@
 * To send a one the dataline is pulled low after 0.625µs
 */
 
-#define ws2812_ctot	(((ws2812_cpuclk/1000)*1250)/1000000)
-#define ws2812_t1	(((ws2812_cpuclk/1000)*375 )/1000000)		// floor
-#define ws2812_t2	(((ws2812_cpuclk/1000)*625+500000)/1000000) // ceil
+#define ws2812_ctot	(((F_CPU/1000)*1250)/1000000)
+#define ws2812_t1	(((F_CPU/1000)*375 )/1000000)		// floor
+#define ws2812_t2	(((F_CPU/1000)*625+500000)/1000000) // ceil
 
 #define w1 (ws2812_t1-2)
 #define w2 (ws2812_t2-ws2812_t1-2)
