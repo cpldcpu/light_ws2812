@@ -13,22 +13,17 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////
-// User defined area: Select CPU type
-///////////////////////////////////////////////////////////////////////
-// #define LIGHT_WS2812_LPC8XX
-#define LIGHT_WS2812_STM32L0XX
-
-///////////////////////////////////////////////////////////////////////
 // User defined area: CPU specific CMSIS include
 ///////////////////////////////////////////////////////////////////////
 
-#ifdef LIGHT_WS2812_LPC8XX
-  #include "LPC8XX.h"			// Change this to the include for your MCU
+#if defined(LIGHT_WS2812_UC_LPC8XX)
+  #include "LPC8XX.h"
   #define LIGHT_WS2812_LPC
-#endif
-#ifdef LIGHT_WS2812_STM32L0XX
+#elif defined(LIGHT_WS2812_UC_STM32L0XX)
   #include "stm32l0xx_hal.h"
   #define LIGHT_WS2812_STM32
+#else
+#error "Error: Please define WS2812_UC_XXXXX"
 #endif
 
 ///////////////////////////////////////////////////////////////////////
