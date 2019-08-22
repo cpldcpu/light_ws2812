@@ -17,10 +17,12 @@ Usage
 
 - Add "light_ws2812_cortex.c" and "light_ws2812_cortex.h" to your project.
 - Make sure optimizations are enabled in the compiler.
-- Change i/o pin settings the include file according to the I/O pin you are using.
-- Add the correct CMSIS include for your CPU.
-- Set ws2812_cpuclk to your CPU core clock.
-- Set the data output register for the output pin you are using.
+- Change i/o pin settings according to the I/O pin you are using:
+  - Define `LIGHT_WS2812_GPIO_PIN=XXX`
+  - Define `LIGHT_WS2812_GPIO_PORT=XXX`
+- Add the correct CMSIS include for your CPU:
+  - Define `LIGHT_WS2812_UC_LPC8XX`, `LIGHT_WS2812_UC_STM32L0XX` or add your CPU in "light_ws2812_cortex.h"
+- Set `F_CPU` to your CPU core clock.
 - Set code memory wait states to zero. **Important:** The library will not work if there are one or more code memory waitstate cycles. This may limit your code clock to 30 Mhz or lower on most Cortex-M0 controllers.
 - Call "ws2812_sendarray" with a pointer to your LED data and the number of bytes to transmit.
   Each LED receives 3 bytes in Green-Red-Blue order. Therefore the total number of bytes should
@@ -36,9 +38,10 @@ Release History
 
 Tested Combinations ARM
 ================
-| Device             | 12 MHz  | 20 MHz  | 30 MHz | 
-| -------------       |:-------:| :-----: | :------: |
-| LPC810 (Cortex M0+)| X      |  X     |    X     |    
+| Device             | 12 MHz  | 16 MHz  | 20 MHz  | 30 MHz | 
+| -------------      |:-------:| :-----: | :-----: | :------: |
+| LPC810 (Cortex M0+)| X       |         |    X    |    X   |
+| STL32L052 (Cortex M0+)|      |  X      |         |        |
 
 Please find updates on https://github.com/cpldcpu/light_ws2812
 
