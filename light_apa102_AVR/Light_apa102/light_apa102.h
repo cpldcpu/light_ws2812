@@ -60,8 +60,13 @@ void apa102_setleds_brightness    (struct cRGB *ledarray, uint16_t number_of_led
 /*
  * Internal defines
  */
+#if !defined(CONCAT)
 #define CONCAT(a, b)            a ## b
+#endif
+
+#if !defined(CONCAT_EXP)
 #define CONCAT_EXP(a, b)   CONCAT(a, b)
+#endif
 
 #define apa102_PORTREG  CONCAT_EXP(PORT,apa102_port)
 #define apa102_DDRREG   CONCAT_EXP(DDR,apa102_port)
