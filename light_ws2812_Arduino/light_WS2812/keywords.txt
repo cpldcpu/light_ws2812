@@ -1,0 +1,31 @@
+#######################################
+# Syntax Coloring Map For light_ws2812
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+WS2812	KEYWORD1
+cRGB	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setOutput	KEYWORD2
+get_crgb_at	KEYWORD2
+set_crgb_at	KEYWORD2
+set_subpizel_at	KEYWORD2
+sync	KEYWORD2
+setColorOrderRGB	KEYWORD2
+setColorOrderGRB	KEYWORD2
+setColorOrderBRG	KEYWORD2
+
+SetHSV	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+dim_curve	LITERAL1
