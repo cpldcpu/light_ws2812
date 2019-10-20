@@ -23,20 +23,35 @@ void inline ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
 
 void inline ws2812_setleds_pin(struct cRGB *ledarray, uint16_t leds, uint8_t pinmask)
 {
+  // switch from RGB to GRB for data stream
+  for(uint16_t i = 0; i < leds; i++){switch_RGB(ledarray[i]);}
   ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
   _delay_us(ws2812_resettime);
+  // switch back to RGB
+  for(uint16_t i = 0; i < leds; i++){switch_RGB(ledarray[i]);}
 }
 
 // Setleds for SK6812RGBW
 void inline ws2812_setleds_rgbw(struct cRGBW *ledarray, uint16_t leds)
-{
+{ 
+  // switch from RGB to GRB for data stream
+  for(uint16_t i = 0; i < leds; i++){switch_RGB(ledarray[i]);}
   ws2812_sendarray_mask((uint8_t*)ledarray,leds<<2,_BV(ws2812_pin));
   _delay_us(ws2812_resettime);
+  // switch back to RGB
+  for(uint16_t i = 0; i < leds; i++){switch_RGB(ledarray[i]);}
 }
 
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
   ws2812_sendarray_mask(data,datlen,_BV(ws2812_pin));
+}
+
+void switch_RGB_GRB(cRGB *color)
+{
+  uint8_t tmpVal = color[0];
+  color[0] = color[1];
+  color[1] = tmpVal;
 }
 
 /*

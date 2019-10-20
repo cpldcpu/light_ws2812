@@ -30,17 +30,7 @@
 #define apa102_clk  2    // Clk out pin
 #endif
 
-///////////////////////////////////////////////////////////////////////
-// Define color byte order
-//
-// Define APA102_BYTE_ORDER_GBR if byte order is not standard BGR.
-///////////////////////////////////////////////////////////////////////
-
-#if defined(APA102_BYTE_ORDER_GBR)
-struct cRGB { uint8_t g; uint8_t b; uint8_t r; };   // GBR
-#else
-struct cRGB { uint8_t b; uint8_t g; uint8_t r; };   // BGR (APA102 Standard)
-#endif
+struct cRGB { uint8_t r; uint8_t g; uint8_t b; };
 
 /* User Interface
  * 

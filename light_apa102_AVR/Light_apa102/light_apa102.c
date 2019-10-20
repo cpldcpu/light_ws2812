@@ -71,9 +71,15 @@ void inline apa102_setleds_brightness(struct cRGB *ledarray, uint16_t leds,uint8
   for (i=0; i<(leds+leds+leds); i+=3)
   {
     SPI_write(0xe0+brightness);  // Maximum global brightness
-    SPI_write(rawarray[i+0]);
-    SPI_write(rawarray[i+1]);
-    SPI_write(rawarray[i+2]);
+#if defined(APA102_BYTE_ORDER_GBR) // Check if non standard order is defined
+    SPI_write(rawarray.g);
+    SPI_write(rawarray.b);
+    SPI_write(rawarray.r);
+#else // BGR (APA102 Standard)
+    SPI_write(rawarray.b); 
+    SPI_write(rawarray.g);
+    SPI_write(rawarray.r);
+#endif
   }
 
   // Reset frame - Only needed for SK9822, has no effect on APA102
