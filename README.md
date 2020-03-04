@@ -149,11 +149,11 @@ Tested Combinations Arduino
 
 Tested Combinations ARM
 ================
-| Device             | 8 MHz | 16 MHz |  12 MHz  | 20 MHz  | 30 MHz | 
-| -------------      |:-------:|:-------:|:-------:|:-----:|:------:|
-| LPC810 (Cortex M0+)|         |         |  X      |   X   |  X     |    
-| STM32F0 (Cortex M0+)| X      |         |         |       |        |    
-| STM32L0 (Cortex M0+)| X      |  X      |         |       |        |    
+|         Device         | 12 MHz | 16 MHz | 20 MHz | 30 MHz | 32 MHz |
+|:----------------------:|:------:|:------:|:------:|:------:|--------|
+|   LPC810 (Cortex M0+)  |    X   |        |    X   |    X   |        |
+| STL32L052 (Cortex M0+) |        |    X   |        |        |        |
+|   KW36Z (Cortex M0+)   |        |        |        |        | X      |   
 
 Please find updates on https://github.com/cpldcpu/light_ws2812
 

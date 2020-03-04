@@ -22,6 +22,10 @@
 #elif defined(LIGHT_WS2812_UC_STM32L0XX)
   #include "stm32l0xx_hal.h"
   #define LIGHT_WS2812_STM32
+#elif defined(LIGHT_WS2812_UC_FSL)
+#include "fsl_port.h"
+#include "fsl_gpio.h"
+#define LIGHT_WS2812_FSL
 #else
 #error "Error: Please define WS2812_UC_XXXXX"
 #endif
@@ -48,6 +52,14 @@
 
   #define ws2812_mask_set  LIGHT_WS2812_GPIO_PIN   // Bitmask to set the data out pin
   #define ws2812_mask_clr  LIGHT_WS2812_GPIO_PIN   // Bitmask to clear the data out pin
+#endif
+#ifdef LIGHT_WS2812_FSL
+  // This example is for Freescale family
+  #define ws2812_port_set ((uint32_t*)&LIGHT_WS2812_GPIO_PORT->PSOR)  // Address of the data port register to set the pin
+  #define ws2812_port_clr ((uint32_t*)&LIGHT_WS2812_GPIO_PORT->PCOR) // Address of the data port register to clear the pin
+
+  #define ws2812_mask_set  1u << 2u  // Bitmask to set the data out pin
+  #define ws2812_mask_clr  1u << 2u  // Bitmask to clear the data out pin
 #endif
 ///////////////////////////////////////////////////////////////////////
 // CPU clock speed
