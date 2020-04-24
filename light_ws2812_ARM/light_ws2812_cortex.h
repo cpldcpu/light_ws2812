@@ -42,8 +42,8 @@
   #define ws2812_port_set ((uint32_t*)&LIGHT_WS2812_GPIO_PORT->SET0)	// Address of the data port register to set the pin
   #define ws2812_port_clr ((uint32_t*)&LIGHT_WS2812_GPIO_PORT->CLR0)	// Address of the data port register to clear the pin
 
-  #define ws2812_mask_set  (1<<2)		// Bitmask to set the data out pin
-  #define ws2812_mask_clr  (1<<2)		// Bitmask to clear the data out pin
+  #define ws2812_mask_set  (1 << LIGHT_WS2812_GPIO_PIN)		// Bitmask to set the data out pin
+  #define ws2812_mask_clr  (1 << LIGHT_WS2812_GPIO_PIN)		// Bitmask to clear the data out pin
 #endif
 #ifdef LIGHT_WS2812_STM32
   // This example is for STM32 family
@@ -58,8 +58,8 @@
   #define ws2812_port_set ((uint32_t*)&LIGHT_WS2812_GPIO_PORT->PSOR)  // Address of the data port register to set the pin
   #define ws2812_port_clr ((uint32_t*)&LIGHT_WS2812_GPIO_PORT->PCOR) // Address of the data port register to clear the pin
 
-  #define ws2812_mask_set  1u << 2u  // Bitmask to set the data out pin
-  #define ws2812_mask_clr  1u << 2u  // Bitmask to clear the data out pin
+  #define ws2812_mask_set  (1 << LIGHT_WS2812_GPIO_PIN)		// Bitmask to set the data out pin
+  #define ws2812_mask_clr  (1 << LIGHT_WS2812_GPIO_PIN)		// Bitmask to clear the data out pin
 #endif
 ///////////////////////////////////////////////////////////////////////
 // CPU clock speed
