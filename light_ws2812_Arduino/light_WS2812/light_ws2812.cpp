@@ -24,9 +24,15 @@
 #define w_totalperiod 1250
 
 // Fixed cycles used by the inner loop
+#if defined(__LGT8F__)
+#define w_fixedlow    4
+#define w_fixedhigh   6
+#define w_fixedtotal  10   
+#else
 #define w_fixedlow    3
 #define w_fixedhigh   6
 #define w_fixedtotal  10   
+#endif
 
 // Insert NOPs to match the timing, if possible
 #define w_zerocycles    (((F_CPU/1000)*w_zeropulse          )/1000000)
@@ -69,7 +75,11 @@
 #endif
 
 #define w_nop1  "nop      \n\t"
+#if defined(__LGT8F__)
+#define w_nop2  "brid .+0 \n\t"
+#else
 #define w_nop2  "rjmp .+0 \n\t"
+#endif
 #define w_nop4  w_nop2 w_nop2
 #define w_nop8  w_nop4 w_nop4
 #define w_nop16 w_nop8 w_nop8
@@ -106,9 +116,16 @@ w_nop8
 #if (w1_nops&16)
 w_nop16
 #endif
+#if defined(__LGT8F__)
+    "       bst   %1,7  \n\t"    //  '1' [02] '0' [02]
+    "       brts  1f    \n\t"    //  '1' [04] '0' [03]
+    "       st    X,%4  \n\t"    //  '1' [--] '0' [04] - fe-low
+    "1:     lsl   %1    \n\t"    //  '1' [05] '0' [05]
+#else
     "       sbrs  %1,7  \n\t"    //  '1' [04] '0' [03]
     "       st    X,%4 \n\t"     //  '1' [--] '0' [05] - fe-low
     "       lsl   %1    \n\t"    //  '1' [05] '0' [06]
+#endif
 #if (w2_nops&1)
   w_nop1
 #endif
