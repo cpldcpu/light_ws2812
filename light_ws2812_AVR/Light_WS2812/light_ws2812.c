@@ -95,7 +95,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 #endif
 
 #define w_nop1  "nop      \n\t"
-#define w_nop2  "rjmp .+0 \n\t"
+#define w_nop2  "brid .+0 \n\t"
 #define w_nop4  w_nop2 w_nop2
 #define w_nop8  w_nop4 w_nop4
 #define w_nop16 w_nop8 w_nop8
