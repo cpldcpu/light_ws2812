@@ -14,6 +14,10 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <util/delay.h>
+
+// Normally ws2812_sendarray_mask() runs under disabled-interrupt condition,
+// undefine if you want to accept interrupts in that function.
+#define interrupt_is_disabled
  
 // Setleds for standard RGB 
 void inline ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
@@ -95,7 +99,11 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 #endif
 
 #define w_nop1  "nop      \n\t"
+#ifdef interrupt_is_disabled
 #define w_nop2  "brid .+0 \n\t"
+#else
+#define w_nop2  "brtc .+0 \n\t"
+#endif
 #define w_nop4  w_nop2 w_nop2
 #define w_nop8  w_nop4 w_nop4
 #define w_nop16 w_nop8 w_nop8
@@ -111,13 +119,18 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
   maskhi |=        ws2812_PORTREG;
   
   sreg_prev=SREG;
+#ifdef interrupt_is_disabled
   cli();  
+#endif  
 
   while (datlen--) {
     curbyte=*data++;
     
     asm volatile(
     "       ldi   %0,8  \n\t"
+#ifndef interrupt_is_disabled
+    "       clt         \n\t"
+#endif
     "loop%=:            \n\t"
     "       out   %2,%3 \n\t"    //  '1' [01] '0' [01] - re
 #if (w1_nops&1)
