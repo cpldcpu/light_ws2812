@@ -76,14 +76,36 @@ in `platformio.ini`.
 | `LIGHT_WS2812_AVR` | `light_ws2812_AVR` |
 | `LIGHT_APA102_AVR` | `light_apa102_AVR` |
 
-Here is an example `platformio.ini` for `attiny85` without `arduino`.
+Here is an example `platformio.ini` for `attiny85` and `nanoatmega328` without
+`arduino`.
 
 ```ini
+[common]
+platform = atmelavr
+build_flags = -DLIGHT_APA102_AVR
+lib_deps = https://github.com/cpldcpu/light_ws2812.git
+upload_port = /dev/cuaU0
+
 [env:attiny85]
 board = attiny85
-platform = atmelavr
-lib_deps = https://github.com/cpldcpu/light_ws2812.git
-build_flags = -DLIGHT_WS2812_AVR
+platform = ${common.platform}
+lib_deps = ${common.lib_deps}
+build_flags = ${common.build_flags}
+lib_compat_mode = off
+
+# with ArduinoISP programmer
+upload_port = ${common.upload_port}
+upload_speed = 9600
+upload_protocol = stk500v1
+upload_flags =
+    -P$UPLOAD_PORT
+
+[env:nanoatmega328]
+board = nanoatmega328
+platform = ${common.platform}
+lib_deps = ${common.lib_deps}
+build_flags = ${common.build_flags}
+upload_port = ${common.upload_port}
 ```
 
 All examples under [examples](examples) directory are built by `platformio`.
