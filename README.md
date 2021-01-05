@@ -91,11 +91,10 @@ board = attiny85
 platform = ${common.platform}
 lib_deps = ${common.lib_deps}
 build_flags = ${common.build_flags}
-lib_compat_mode = off
 
 # with ArduinoISP programmer
 upload_port = ${common.upload_port}
-upload_speed = 9600
+upload_speed = 19200
 upload_protocol = stk500v1
 upload_flags =
     -P$UPLOAD_PORT
