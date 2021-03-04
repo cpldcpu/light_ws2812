@@ -23,7 +23,7 @@
   hardware SPI.
 */
 
-inline void SPI_init(void) {
+static inline void SPI_init(void) {
   apa102_DDRREG  |=  _BV(apa102_data);
   apa102_DDRREG  |=  _BV(apa102_clk);
   apa102_PORTREG &= ~_BV(apa102_clk);  // initial state of clk is low

@@ -24,3 +24,4 @@ light_ws2812\Objects\*
 .DS_Store
 .pioenvs/
 .piolibdeps/
+.pio/
