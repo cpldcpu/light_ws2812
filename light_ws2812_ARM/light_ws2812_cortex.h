@@ -31,6 +31,11 @@
   #include <stdint.h>
   #define LIGHT_WS2812_GPIO_PIN 2
   #define LIGHT_WS2812_XMC4500
+#elif defined(LIGHT_WS2812_UC_XMC1100)
+  #include "xmc_gpio.h"
+  #include <stdint.h>
+  #define LIGHT_WS2812_GPIO_PIN 2
+  #define LIGHT_WS2812_XMC1100
 #else
 #error "Error: Please define WS2812_UC_XXXXX"
 #endif
@@ -67,6 +72,14 @@
   #define ws2812_mask_clr  (1 << LIGHT_WS2812_GPIO_PIN)		// Bitmask to clear the data out pin
 #endif
 #ifdef LIGHT_WS2812_XMC4500
+  // This example is for XMC family
+  #define ws2812_port_set  ( (uint32_t*)(&((XMC_GPIO_PORT_t *)PORT1_BASE)->OUT) ) // Address of the data port register to set the pin
+  #define ws2812_port_clr  ws2812_port_set                                        // Address of the data port register to clear the pin
+
+  #define ws2812_mask_set  (1 << LIGHT_WS2812_GPIO_PIN)  // Bitmask to set the data out pin
+  #define ws2812_mask_clr  (0 << LIGHT_WS2812_GPIO_PIN)  // Bitmask to clear the data out pin
+#endif
+#ifdef LIGHT_WS2812_XMC1100
   // This example is for XMC family
   #define ws2812_port_set  ( (uint32_t*)(&((XMC_GPIO_PORT_t *)PORT1_BASE)->OUT) ) // Address of the data port register to set the pin
   #define ws2812_port_clr  ws2812_port_set                                        // Address of the data port register to clear the pin
