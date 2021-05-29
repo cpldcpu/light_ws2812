@@ -44,7 +44,11 @@ void ws2812_sendarray(uint8_t *data,int datlen)
 			"		lsl %[dat],#24				\n\t"
 			"		movs %[ctr],#8				\n\t"
 			"ilop%=:							\n\t"
+#ifdef LIGHT_WS2812_XMC4500
+			"		lsls %[dat], #1				\n\t"
+#else
 			"		lsl %[dat], #1				\n\t"
+#endif
 			"		str %[maskhi], [%[set]]		\n\t"
 #if (w1&1)
 			ws2812_DEL1
@@ -79,7 +83,11 @@ void ws2812_sendarray(uint8_t *data,int datlen)
 #if (w2&16)
 			ws2812_DEL16
 #endif
+#ifdef LIGHT_WS2812_XMC4500
+			"		subs %[ctr], #1				\n\t"
+#else
 			"		sub %[ctr], #1				\n\t"
+#endif
 			"		str %[masklo], [%[clr]]		\n\t"
 			"		beq	end%=					\n\t"
 #if (w3&1)
