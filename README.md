@@ -142,6 +142,8 @@ Release History
 	- Added support for SK6812RGBW LEDs. Please see example folder for usage.
 - v2.4 2016/11/27
 	- Increased waittime to support WS2813 LEDs
+- v2.x 2021 
+	- Many smaller updates and fixed, please check commit history
     
 You can find the old V1 here: https://github.com/cpldcpu/light_ws2812/tree/v1.0
 
@@ -176,7 +178,4 @@ Tested Combinations ARM
 | STL32L052 (Cortex M0+) |        |    X   |        |        |        |
 |   KW36Z (Cortex M0+)   |        |        |        |        | X      |   
 
-Please find updates on https://github.com/cpldcpu/light_ws2812
-
-bug reports etc: cpldcpu@gmail.com
-
+Please find updates on https://github.com/cpldcpu/light_ws281
