@@ -46,8 +46,8 @@ const byte dim_curve[] = {
 #endif
 
 struct cRGB { 
-	uint8_t g; 
 	uint8_t r; 
+	uint8_t g; 
 	uint8_t b;
 
 #ifdef USE_HSV

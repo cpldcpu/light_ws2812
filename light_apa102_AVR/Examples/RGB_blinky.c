@@ -11,8 +11,6 @@
 #include <avr/interrupt.h>
 #include "light_apa102.h"
 
-struct cRGB led[1];
-
 int main(void)
 {
 
@@ -27,16 +25,13 @@ int main(void)
 
   while(1)
   {
-    led[0].r=255;led[0].g=00;led[0].b=0;    // Write red to array
-    apa102_setleds(led,30);
+    apa102_setleds({255, 0, 0},30);         // Write red to array
     _delay_ms(500);                         // wait for 500ms.
 
-    led[0].r=0;led[0].g=255;led[0].b=0;			// green
-    apa102_setleds(led,1);
+    apa102_setleds({0, 255, 0},30);         // green
     _delay_ms(500);
 
-    led[0].r=0;led[0].g=00;led[0].b=255;		// blue
-    apa102_setleds(led,1);
+    apa102_setleds({0, 0, 255},30);         // blue
     _delay_ms(500);
   }
 }

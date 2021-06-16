@@ -20,13 +20,10 @@
 #define apa102_data 0    // Data out pin
 #define apa102_clk  2    // Clk out pin
 
+struct cRGB { uint8_t r; uint8_t g; uint8_t b; };
+
 ///////////////////////////////////////////////////////////////////////
-// Define color byte order
+// Define APA102_BYTE_ORDER_GBR if byte order is not standard BGR.
 ///////////////////////////////////////////////////////////////////////
-
-struct cRGB { uint8_t b; uint8_t g; uint8_t r; };   // BGR (APA102 Standard)
-//struct cRGB { uint8_t g; uint8_t b; uint8_t r; };   // GBR 
-
-
 
 #endif /* APA102_CONFIG_H_ */

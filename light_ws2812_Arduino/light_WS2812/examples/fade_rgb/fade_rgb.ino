@@ -13,7 +13,6 @@
 
 
 WS2812 LED(LEDCount); 
-cRGB value;
 
 byte intensity;
 byte sign;
@@ -48,22 +47,13 @@ void loop() {
 
 	while (i < LEDCount){
 		if ((i % 3) == 0) {  // First LED, and every third after that
-			value.b = 0; 
-			value.g = 0; 
-			value.r = intensity; // RGB Value -> Red Only
-			LED.set_crgb_at(i, value); // Set value at LED found at index 0
+			LED.set_crgb_at(i, {intensity, 0, 0}); // Set Red Only at LED found at index 0
 		}
 		else if ((i % 3) == 1) { // Second LED, and every third after that
-			value.b = 0; 
-			value.g = intensity; 
-			value.r = 0; // RGB Value -> Green Only
-			LED.set_crgb_at(i, value); // Set value at LED found at index 0
+			LED.set_crgb_at(i, {0, intensity, 0}); // Set Green Only at LED found at index 0
 		}
 		else  { // Third LED, and every third after that
-			value.b = intensity; 
-			value.g = 0; 
-			value.r = 0; // RGB Value -> Blue Only
-			LED.set_crgb_at(i, value); // Set value at LED found at index 0
+			LED.set_crgb_at(i, {0, 0, intensity}); // Set Blue Only at LED found at index 0
 		}
 		i++;
 	}
