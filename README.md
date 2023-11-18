@@ -1,4 +1,4 @@
-light_ws2812 V2.4
+light_ws2812 V2.5
 ============
 
 Light weight library to control WS2812 based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers. The new version 2 of this library supports a simplified interface and arbitrary CPU clock. V2.1 finally adds Arduino support.
@@ -27,7 +27,7 @@ innerloops. Some advantages of this approach compared to other solutions are:
 
 - Compatible to all AVR MCUs since it does not rely on special periphery.
 - The code timing is automatically adjusted to the CPU clock at compile time.
-- A CPU clock speed of 8 MHz and up is recommended, but even 4 MHz may work under some circumstances.
+- A CPU clock speed of 8 MHz and up is recommended.
 - Much smaller program code: Size optimized assembler without unrolled loops (<50 bytes in most cases)
 - Supports standard AVR, reduced core AVR (Attiny 4/5/9/10/20/40) and XMEGA (untested) without special case handling.
 - Experimental Cortex-M0 ARM support.
@@ -142,9 +142,15 @@ Release History
 	- Added support for SK6812RGBW LEDs. Please see example folder for usage.
 - v2.4 2016/11/27
 	- Increased waittime to support WS2813 LEDs
-- v2.x 2021 
+- v2.4x 2021 
 	- Many smaller updates and fixed, please check commit history
-    
+- v2.5 2023/11/18
+    - Changed AVR library to use direct memory access instead of "OUT". This should fix issues on newer AVR devices. As a side effect, 
+	4 MHz operation is no longer supported.
+	- Updated Arduino library archive
+	- Fixed an issue where the config include was not used
+
+
 You can find the old V1 here: https://github.com/cpldcpu/light_ws2812/tree/v1.0
 
 Tested Combinations AVR
