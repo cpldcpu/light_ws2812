@@ -4,8 +4,9 @@
 # Change these parameters for your device
 
 F_CPU = 16000000
-DEVICE = attiny85
-
+# DEVICE = attiny85
+DEVICE = atmega168p
+#
 # Tools:
 CC = avr-gcc
 

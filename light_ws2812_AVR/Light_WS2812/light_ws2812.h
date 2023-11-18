@@ -33,11 +33,11 @@
 // Define I/O pin
 ///////////////////////////////////////////////////////////////////////
 #if !defined(ws2812_port)
-#define ws2812_port B   // Data port
+#define ws2812_port D   // Data port
 #endif
 
 #if !defined(ws2812_pin)
-#define ws2812_pin  2   // Data out pin
+#define ws2812_pin  7   // Data out pin
 #endif
 
 /*
