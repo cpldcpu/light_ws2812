@@ -13,7 +13,7 @@ if 'BUILD_FLAGS' in env:
 
     if "LIGHT_WS2812_AVR" in cppdefines:
         # pure C without arduino
-        env.Append(SRC_FILTER=["+<light_ws2812_AVR/Light_WS2812/*.c>", "light_ws2812_AVR/Light_WS2812/*.h"])
+        env.Append(SRC_FILTER=["+<light_ws2812_AVR/Light_WS2812/*.c>", "light_ws2812_AVR/Light_WS2812/*.h", "light_ws2812_AVR/*.h"])
         # there is no way to change src_dir. without the following, the compiler
         # would look for the header files in root directory of the library.
         env.Append(CPPPATH=[
