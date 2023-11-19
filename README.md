@@ -146,7 +146,7 @@ Release History
 	- Many smaller updates and fixed, please check commit history
 - v2.5 2023/11/18
     - Changed AVR library to use direct memory access instead of "OUT". This should fix issues on newer AVR devices. As a side effect, 
-	4 MHz operation is no longer supported.
+	4 MHz operation and reduced core Attinyies are no longer supported. Please revert to [V2.4](https://github.com/cpldcpu/light_ws2812/tree/cd149996012fe96bc3d7883cb18a0103fd8e8b3a) in case you require this.
 	- Updated Arduino library archive
 	- Fixed an issue where the config include was not used
  	- Support for LGT8F 	
@@ -162,11 +162,11 @@ Tested Combinations AVR
 | ATtiny 85 (Standard Core )| X*      |  X     |         |       |  X   |    |
 | ATtiny 13 (Standard Core)|        |        |    X    |       |     |    |
 | ATmega 8 (Standard Core)|        |        |         |   X    |  X  |    |
-| ATtiny 10 (Reduced Core)| X*      |  X     |         |       |     |    |
+| ATtiny 10* (Reduced Core)| X*      |  X*     |         |       |     |    |
 | ATmega 168 (Standard Core)|        |        |         |       |  X  |  X  |
 | ATmega 32u4 (Standard Core)|        |        |         |   X    |  X   |  X  |
 
-*4 MHz is only supported by V2.4 and earlier
+*only supported by V2.4 and earlier
 
 Tested Combinations Arduino
 ================
