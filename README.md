@@ -149,6 +149,7 @@ Release History
 	4 MHz operation is no longer supported.
 	- Updated Arduino library archive
 	- Fixed an issue where the config include was not used
+ 	- Support for LGT8F 	
 
 
 You can find the old V1 here: https://github.com/cpldcpu/light_ws2812/tree/v1.0
@@ -158,23 +159,23 @@ Tested Combinations AVR
 
 | Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz | 20 Mhz |
 | -------------       |:-------:| :-----: | :------: | :----:| :---:| :---:|
-| ATtiny 85 (Standard Core )| X      |  X     |         |       |  X   |    |
+| ATtiny 85 (Standard Core )| X*      |  X     |         |       |  X   |    |
 | ATtiny 13 (Standard Core)|        |        |    X    |       |     |    |
 | ATmega 8 (Standard Core)|        |        |         |   X    |  X  |    |
-| ATtiny 10 (Reduced Core)| X      |  X     |         |       |     |    |
+| ATtiny 10 (Reduced Core)| X*      |  X     |         |       |     |    |
 | ATmega 168 (Standard Core)|        |        |         |       |  X  |  X  |
 | ATmega 32u4 (Standard Core)|        |        |         |   X    |  X   |  X  |
 
+*4 MHz is only supported by V2.4 and earlier
 
 Tested Combinations Arduino
 ================
 
 | Device             | 4 MHz  | 8 MHz  | 9.6 MHz | 12 MHz | 16 MHz | 20 Mhz |
 | -------------       |:-------:| :-----: | :------: | :----:| :---:| :---:|
-| Arduino Uno |       |   X   |         |       |  X   |    |
+| Arduino Uno |       |   X*   |         |       |  X   |    |
 | Arduino Mega 2560 |        |        |        |       |    X    |    |
 | Arduino Nano |        |        |        |       |    X    |    |
-
 
 Tested Combinations ARM
 ================
