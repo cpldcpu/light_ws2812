@@ -165,7 +165,7 @@ Tested Combinations AVR
 | ATtiny 85 (Standard Core )| X*      |  X     |         |       |  X   |    |
 | ATtiny 13 (Standard Core)|        |        |    X    |       |     |    |
 | ATmega 8 (Standard Core)|        |        |         |   X    |  X  |    |
-| ATtiny 10* (Reduced Core)| X*      |  X*     |         |       |     |    |
+| ATtiny 10* (Reduced Core)| X*      |  X      |         |       |     |    |
 | ATmega 168 (Standard Core)|        |        |         |       |  X  |  X  |
 | ATmega 32u4 (Standard Core)|        |        |         |   X    |  X   |  X  |
 
