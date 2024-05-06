@@ -1,4 +1,4 @@
-light_ws2812 V2.5
+light_ws2812 V2.6
 ============
 
 Light weight library to control WS2812 based LEDS and LED Strings on 8-Bit AVR and ARM microcontrollers. The new version 2 of this library supports a simplified interface and arbitrary CPU clock. V2.1 finally adds Arduino support.
