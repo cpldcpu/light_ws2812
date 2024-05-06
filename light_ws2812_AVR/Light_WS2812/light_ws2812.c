@@ -4,10 +4,11 @@
 * Controls WS2811/WS2812/WS2812B RGB-LEDs
 * Author: Tim (cpldcpu@gmail.com)
 *
-* Jan 18th, 2014  v2.0b Initial Version
-* Nov 29th, 2015  v2.3  Added SK6812RGBW support
-* Nov 11th, 2023  v2.5  Added support for ports that cannot be addressed with "out"
+* Jan 18, 2014  v2.0b Initial Version
+* Nov 29, 2015  v2.3  Added SK6812RGBW support
+* Nov 11, 2023  v2.5  Added support for ports that cannot be addressed with "out"
 *                       Added LGT8F88A support
+* May 1, 2024   v2.6 Added support for reduced core AVRs
 *
 * License: GNU GPL v2+ (see License.txt)
 */
@@ -56,20 +57,20 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 #define w_totalperiod 1250
 
 // Fixed cycles used by the inner loop
-#if defined(__LGT8F__)
+#if defined(__LGT8F__)     // LGT8F88A
 #define w_fixedlow    4
 #define w_fixedhigh   6
 #define w_fixedtotal  10   
-#else
+#elif __AVR_ARCH__ == 100  // reduced core AVR
+#define w_fixedlow    2
+#define w_fixedhigh   4
+#define w_fixedtotal  8   
+#else                      // all others
 #define w_fixedlow    3
 #define w_fixedhigh   6
 #define w_fixedtotal  10   
 #endif
 
-// // Fixed cycles used by the inner loop
-// #define w_fixedlow    2
-// #define w_fixedhigh   4
-// #define w_fixedtotal  8   
 
 // Insert NOPs to match the timing, if possible
 #define w_zerocycles    (((F_CPU/1000)*w_zeropulse          )/1000000)
@@ -125,7 +126,9 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
   uint8_t curbyte,ctr,masklo;
   uint8_t sreg_prev;
+#if __AVR_ARCH__ != 100  
   uint8_t *port = (uint8_t*) _SFR_MEM_ADDR(ws2812_PORTREG);
+#endif
 
   ws2812_DDRREG |= maskhi; // Enable output
   
@@ -146,7 +149,11 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
     "       clt         \n\t"
 #endif
     "loop%=:            \n\t"
+#if __AVR_ARCH__ == 100     
+    "       out   %2,%3 \n\t"    //  '1' [01] '0' [01] - re
+#else
     "       st    X,%3 \n\t"    //  '1' [02] '0' [02] - re
+#endif
 
 #if (w1_nops&1)
 w_nop1
@@ -168,6 +175,10 @@ w_nop16
     "       brts  1f    \n\t"    //  '1' [04] '0' [03]
     "       st    X,%4  \n\t"    //  '1' [--] '0' [04] - fe-low
     "1:     lsl   %1    \n\t"    //  '1' [05] '0' [05]
+#elif __AVR_ARCH__ == 100     
+    "       sbrs  %1,7  \n\t"    //  '1' [03] '0' [02]
+    "       out   %2,%4 \n\t"    //  '1' [--] '0' [03] - fe-low
+    "       lsl   %1    \n\t"    //  '1' [04] '0' [04]    
 #else
     "       sbrs  %1,7  \n\t"    //  '1' [04] '0' [03]
     "       st    X,%4 \n\t"     //  '1' [--] '0' [05] - fe-low
@@ -188,9 +199,13 @@ w_nop16
 #if (w2_nops&16)
   w_nop16 
 #endif
+#if __AVR_ARCH__ == 100     
+    "       out   %2,%4 \n\t"    //  '1' [+1] '0' [+1] - fe-high
+#else
     "       brcc skipone%= \n\t"    //  '1' [+1] '0' [+2] - 
     "       st   X,%4      \n\t"    //  '1' [+3] '0' [--] - fe-high
     "skipone%=:               "     //  '1' [+3] '0' [+2] - 
+#endif    
 #if (w3_nops&1)
 w_nop1
 #endif
@@ -210,7 +225,12 @@ w_nop16
     "       dec   %0    \n\t"    //  '1' [+4] '0' [+3]
     "       brne  loop%=\n\t"    //  '1' [+5] '0' [+4]
     :	"=&d" (ctr)
+#if __AVR_ARCH__ == 100    
+    :	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_PORTREG)), "r" (maskhi), "r" (masklo)
+#else    
     :	"r" (curbyte), "x" (port), "r" (maskhi), "r" (masklo)
+#endif  
+
     );
   }
   

@@ -150,6 +150,9 @@ Release History
 	- Updated Arduino library archive
 	- Fixed an issue where the config include was not used
  	- Support for LGT8F 	
+- v2.6 2024/05/01
+    - Re-added support for reduced core AVR that was broken in v2.5. Thanks to @U-1F992 for testing
+    - Fixed location of ws2812_config.h 
 
 
 You can find the old V1 here: https://github.com/cpldcpu/light_ws2812/tree/v1.0
@@ -162,7 +165,7 @@ Tested Combinations AVR
 | ATtiny 85 (Standard Core )| X*      |  X     |         |       |  X   |    |
 | ATtiny 13 (Standard Core)|        |        |    X    |       |     |    |
 | ATmega 8 (Standard Core)|        |        |         |   X    |  X  |    |
-| ATtiny 10* (Reduced Core)| X*      |  X*     |         |       |     |    |
+| ATtiny 10 (Reduced Core)| X      |  X      |         |       |     |    |
 | ATmega 168 (Standard Core)|        |        |         |       |  X  |  X  |
 | ATmega 32u4 (Standard Core)|        |        |         |   X    |  X   |  X  |
 
