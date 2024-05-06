@@ -4,10 +4,11 @@
 * Controls WS2811/WS2812/WS2812B RGB-LEDs
 * Author: Tim (cpldcpu@gmail.com)
 *
-* Jan 18th, 2014  v2.0b Initial Version
-* Nov 29th, 2015  v2.3  Added SK6812RGBW support
-* Nov 11th, 2023  v2.5  Added support for ports that cannot be addressed with "out"
+* Jan 18, 2014  v2.0b Initial Version
+* Nov 29, 2015  v2.3  Added SK6812RGBW support
+* Nov 11, 2023  v2.5  Added support for ports that cannot be addressed with "out"
 *                       Added LGT8F88A support
+* May 1, 2024   v2.6 Added support for reduced core AVRs
 *
 * License: GNU GPL v2+ (see License.txt)
 */

@@ -150,8 +150,8 @@ Release History
 	- Updated Arduino library archive
 	- Fixed an issue where the config include was not used
  	- Support for LGT8F 	
-- v2.6rc 2024/05/01
-    - Re-added support for reduced core AVR that was broken in v2.5
+- v2.6 2024/05/01
+    - Re-added support for reduced core AVR that was broken in v2.5. Thanks to @U-1F992 for testing
     - Fixed location of ws2812_config.h 
 
 
