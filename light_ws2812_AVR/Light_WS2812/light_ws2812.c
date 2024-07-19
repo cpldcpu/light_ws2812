@@ -124,6 +124,7 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 
 void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 {
+  // `maskhi` is 0x80 if P?7 is LED DATA
   uint8_t curbyte,ctr,masklo;
   uint8_t sreg_prev;
 #if __AVR_ARCH__ != 100  
@@ -132,10 +133,13 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
 
   ws2812_DDRREG |= maskhi; // Enable output
   
+  // `masklo` and `maskhi` are written to PORT? to drive the DATA line low or
+  // high (rather than setting or clearing the bit in PORT?)
   masklo	=~maskhi&ws2812_PORTREG;
   maskhi |=        ws2812_PORTREG;
   
   sreg_prev=SREG;
+
 #ifdef interrupt_is_disabled
   cli();  
 #endif  
@@ -143,7 +147,7 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
   while (datlen--) {
     curbyte=*data++;
     
-    asm volatile(
+    __asm__ volatile(
     "       ldi   %0,8  \n\t"
 #ifndef interrupt_is_disabled
     "       clt         \n\t"
