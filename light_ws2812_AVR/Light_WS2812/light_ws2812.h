@@ -41,6 +41,18 @@
 #define ws2812_pin  0   // Data out pin
 #endif
 
+///////////////////////////////////////////////////////////////////////
+// Define interrupt behaviour
+//
+// Set to 1 if you want the library to handle interrupt toggling
+// (i.e. turning off interrupts when sending data and reverting back after).
+// Set to 0 if you need to allow interrupts (can introduce flickering!).
+//
+///////////////////////////////////////////////////////////////////////
+#if !defined(ws2812_interrupt_handling)
+#define ws2812_interrupt_handling  1
+#endif
+
 /*
  *  Structure of the LED array
  *
