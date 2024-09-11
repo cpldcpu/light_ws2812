@@ -45,7 +45,7 @@ const byte dim_curve[] = {
 };
 #endif
 
-struct cRGB { 
+struct __attribute__ ((__packed__)) cRGB { 
 	uint8_t g; 
 	uint8_t r; 
 	uint8_t b;

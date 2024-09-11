@@ -37,9 +37,9 @@
 ///////////////////////////////////////////////////////////////////////
 
 #if defined(APA102_BYTE_ORDER_GBR)
-struct cRGB { uint8_t g; uint8_t b; uint8_t r; };   // GBR
+struct __attribute__ ((__packed__)) cRGB { uint8_t g; uint8_t b; uint8_t r; };   // GBR
 #else
-struct cRGB { uint8_t b; uint8_t g; uint8_t r; };   // BGR (APA102 Standard)
+struct __attribute__ ((__packed__)) cRGB { uint8_t b; uint8_t g; uint8_t r; };   // BGR (APA102 Standard)
 #endif
 
 /* User Interface
