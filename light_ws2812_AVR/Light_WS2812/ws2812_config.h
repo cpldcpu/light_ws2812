@@ -31,4 +31,15 @@
 #define ws2812_port B     // Data port 
 #define ws2812_pin  0     // Data out pin
 
+///////////////////////////////////////////////////////////////////////
+// Define interrupt behaviour
+//
+// Set to 1 if you want the library to handle interrupt toggling
+// (i.e. turning off interrupts when sending data and reverting back after).
+// Set to 0 if you need to allow interrupts (can introduce flickering!).
+//
+///////////////////////////////////////////////////////////////////////
+
+#define ws2812_interrupt_handling 1
+
 #endif /* WS2812_CONFIG_H_ */
