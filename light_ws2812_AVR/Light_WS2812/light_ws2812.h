@@ -63,7 +63,9 @@
 struct __attribute__ ((__packed__)) cRGB  { uint8_t g; uint8_t r; uint8_t b; };
 struct __attribute__ ((__packed__)) cRGBW { uint8_t g; uint8_t r; uint8_t b; uint8_t w;};
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* User Interface
  * 
@@ -91,6 +93,10 @@ void ws2812_setleds_rgbw(struct cRGBW *ledarray, uint16_t number_of_leds);
 
 void ws2812_sendarray     (uint8_t *array,uint16_t length);
 void ws2812_sendarray_mask(uint8_t *array,uint16_t length, uint8_t pinmask);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 /*

@@ -54,8 +54,18 @@ struct __attribute__ ((__packed__)) cRGB { uint8_t b; uint8_t g; uint8_t r; };  
  *         - Send out the LED data 
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 void apa102_setleds   	  		  (struct cRGB *ledarray, uint16_t number_of_leds);
 void apa102_setleds_brightness    (struct cRGB *ledarray, uint16_t number_of_leds,uint8_t brightness);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 /*
  * Internal defines
